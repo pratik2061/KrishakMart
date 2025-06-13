@@ -34,8 +34,8 @@ function App() {
         </Route>
 
         <Route element={<ProtectedRoutes allowableRoles="CONSUMER" />}>
-          <Route path="/consumer">
-            <Route index element={<ConsumerHome />} />
+          <Route path="/consumer" element={<ConsumerHome />}>
+            <Route index  />
           </Route>
         </Route>
       </>
