@@ -4,11 +4,11 @@ import SideMenuBar from "../../components/SideMenuBar";
 function ConsumerHome() {
   return (
     <div className="w-full h-full">
-      <div className="w-full h-full grid grid-cols-[20%_auto]">
-        <div className="bg-red-50">
+      <div className="w-full h-full grid grid-cols-[12%_auto]">
+        <div className="bg-yellow-100 h-[100vh]">
           <SideMenuBar />
         </div>
-        <div>
+        <div className="bg-green-200">
           <Outlet />
         </div>
       </div>

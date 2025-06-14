@@ -1,7 +1,9 @@
 
 function SideMenuBar() {
   return (
-    <div>SideMenuBar</div>
+    <div className="w-full h-full mx-auto">
+      SideMenuBar
+    </div>
   )
 }
 
