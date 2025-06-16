@@ -40,8 +40,8 @@ function MenuFooter() {
         <NavLink
           to={"/consumer/profile"}
           className={({ isActive }) =>
-            `flex space-x-4 hover:cursor-pointer ${
-              isActive ? "text-green-900" : " text-amber-950"
+            `flex space-x-4 hover:cursor-pointer  hover:text-green-700${
+              isActive ? "text-green-900" : " text-amber-900 "
             }`
           }
         >
@@ -56,8 +56,8 @@ function MenuFooter() {
           }}
           to={"/login"}
           className={({ isActive }) =>
-            `flex space-x-4 hover:cursor-pointer ${
-              isActive ? "text-green-900" : " text-amber-950"
+            `flex space-x-4 hover:cursor-pointer hover:text-red-700 ${
+              isActive ? "text-green-900" : " text-amber-900"
             }`
           }
         >

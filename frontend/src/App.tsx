@@ -7,11 +7,12 @@ import {
 import Login from "./pages/auth/Login";
 import { ToastContainer } from "react-toastify";
 import { ProtectedRoutes } from "./components/ProtectedRoutes";
-import ConsumerHome from "./pages/consumer/ConsumerHome";
 import AdminHome from "./pages/admin/AdminHome";
 import FarmerHome from "./pages/farmer/FarmerHome";
 import { UnauthorizedPage } from "./components/unauthorized";
 import { NotFoundPage } from "./components/NotFound";
+import ConsumerHomeLayout from "./pages/consumer/ConsumerHomeLayout";
+import ConsumerHome from "./pages/consumer/ConsumerHome";
 
 function App() {
   const router = createBrowserRouter(
@@ -34,8 +35,8 @@ function App() {
         </Route>
 
         <Route element={<ProtectedRoutes allowableRoles="CONSUMER" />}>
-          <Route path="/consumer" element={<ConsumerHome />}>
-            <Route index  />
+          <Route path="/consumer" element={<ConsumerHomeLayout />}>
+            <Route index  element={<ConsumerHome/>}/>
           </Route>
         </Route>
       </>

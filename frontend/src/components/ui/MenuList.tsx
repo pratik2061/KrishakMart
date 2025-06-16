@@ -11,8 +11,8 @@ function MenuList() {
           to={"/consumer"}
           className={({ isActive }) =>
             `${
-              isActive ? "text-green-900" : "text-amber-950"
-            } flex flex-wrap w-full space-x-4 `
+              isActive ? "text-green-900 " : "text-amber-900"
+            } flex flex-wrap w-full space-x-4  hover:text-green-700`
           }
         >
           <IoMdHome className="text-3xl " />
@@ -25,8 +25,8 @@ function MenuList() {
           to={"/consumer/cart"}
           className={({ isActive }) =>
             `${
-              isActive ? "text-green-900" : "text-amber-950"
-            } flex flex-wrap w-full space-x-4 `
+              isActive ? "text-green-900" : "text-amber-900"
+            } flex flex-wrap w-full space-x-4 hover:text-green-700 `
           }
         >
           <FaShoppingCart className="text-3xl " />
@@ -38,8 +38,9 @@ function MenuList() {
           to={"/consumer/order"}
           className={({ isActive }) =>
             `${
-              isActive ? "text-green-900" : "text-amber-950"
-            } flex flex-wrap w-full space-x-4 `
+              isActive ? "text-green-900" : "text-amber-900"
+            } flex flex-wrap w-full space-x-4 hover:text-green-700 
+              `
           }
         >
           <IoBagCheck className="text-3xl " />
