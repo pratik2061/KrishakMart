@@ -1,17 +1,45 @@
-import rice from '/rice.jpg'
+import rice from "/rice.jpg";
 
 function ProductCard() {
   return (
-    <div className="w-full min-h-screen bg-red-50 lg:p-10 md:p-8 p-6">
-      <div className="w-full flex flex-wrap ">
-        <div className=" max-w-[300px] container border border-black">
-          <img src={rice} alt="" className='' />
-
+    <div className=" lg:max-w-[320px] hover:scale-101 md:max-w-[280px] max-w-[230px] border border-gray-200 container rounded-2xl md:shadow-xl shadow-lg md:mx-4 mx-2 md:my-6 my-4   ">
+      <div className="overflow-hidden">
+        <img
+          src={rice}
+          alt="product image"
+          className="rounded-t-2xl hover:transition-transform hover:ease-in-out hover:duration-500"
+        />
+      </div>
+      <div className=" p-2 w-full rounded-b-2xl bg-white">
+        <h1 className="font-bold md:text-2xl text-xl   px-2 md:py-1 py-0 ">
+          Rice
+        </h1>
+        <div className="px-2">
+          <span className=" lg:text-[15px] md:text-[12px] text-[10px] text-gray-600  border border-neutral-400 md:p-[2px] p-[1px] rounded-sm">
+            CEREAL GRAINS
+          </span>
         </div>
-
+        <p className="px-2 tracking-tight text-wrap text-gray-700 md:py-4 py-2">
+          Staple grain, rich in carbohydrates, versatile, nutritious, globally
+          consumed.
+        </p>
+        <div className="px-2 md:py-2 py-4 grid md:grid-cols-[40%_auto] md:grid-rows-none grid-cols-none grid-rows-2 md:gap-1 gap-3 ">
+          <div className="">
+            <p className="font-extrabold md:text-[15px] text-[13px]">PRICE</p>
+            <p className="font-bold md:text-[20px] text-[18px]">
+              Rs. 120<span className="md:text-2xl-[15px] text-[13px]">/kg</span>
+            </p>
+          </div>
+          <button
+            onClick={() => {}}
+            className="bg-green-800 hover:bg-green-700 font-bold text-white rounded-lg py-2 hover:cursor-pointer"
+          >
+            Add to cart
+          </button>
+        </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default ProductCard
+export default ProductCard;
