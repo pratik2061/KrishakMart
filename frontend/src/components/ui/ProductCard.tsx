@@ -1,33 +1,32 @@
-import rice from "/rice.jpg";
+import type { Product } from "../../pages/consumer/ConsumerHome";
 
-function ProductCard() {
+
+function ProductCard({product}:{product : Product}) {
   return (
     <div className=" lg:max-w-[320px] hover:scale-101 md:max-w-[280px] max-w-[230px] border border-gray-200 container rounded-2xl md:shadow-xl shadow-lg md:mx-4 mx-2 md:my-6 my-4   ">
       <div className="overflow-hidden">
         <img
-          src={rice}
+          src={product.productImage}
           alt="product image"
           className="rounded-t-2xl hover:transition-transform hover:ease-in-out hover:duration-500"
         />
       </div>
       <div className=" p-2 w-full rounded-b-2xl bg-white">
         <h1 className="font-bold md:text-2xl text-xl   px-2 md:py-1 py-0 ">
-          Rice
+          {product.productName}
         </h1>
         <div className="px-2">
-          <span className=" lg:text-[15px] md:text-[12px] text-[10px] text-gray-600  border border-neutral-400 md:p-[2px] p-[1px] rounded-sm">
-            CEREAL GRAINS
+          <span className=" bg-stone-500  text-white lg:text-[15px] md:text-[12px] text-[10px]   border border-neutral-400  p-[1px] md:rounded-md rounded-sm">
+            {product.productCategory}
           </span>
         </div>
-        <p className="px-2 tracking-tight text-wrap text-gray-700 md:py-4 py-2">
-          Staple grain, rich in carbohydrates, versatile, nutritious, globally
-          consumed.
+        <p className="px-2 tracking-tight text-wrap text-gray-700 md:py-4 py-2">{product.productDescription}
         </p>
         <div className="px-2 md:py-2 py-4 grid md:grid-cols-[40%_auto] md:grid-rows-none grid-cols-none grid-rows-2 md:gap-1 gap-3 ">
           <div className="">
             <p className="font-extrabold md:text-[15px] text-[13px]">PRICE</p>
             <p className="font-bold md:text-[20px] text-[18px]">
-              Rs. 120<span className="md:text-2xl-[15px] text-[13px]">/kg</span>
+              Rs. {product.productPrice}<span className="md:text-2xl-[15px] text-[13px]">/kg</span>
             </p>
           </div>
           <button
