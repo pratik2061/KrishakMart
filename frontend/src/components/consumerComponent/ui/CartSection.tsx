@@ -19,11 +19,11 @@ function CartSection() {
           </div>
           <p className="font-normal text-xl leading-8 text-gray-500 flex items-center justify-between">
             <span className="w-full max-w-[260px] text-center">Quantity</span>
-            <span className="w-full max-w-[200px] text-center">Total</span>
+            <span className="w-full max-w-[200px] text-center">Price</span>
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 min-[550px]:gap-6 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 min-[550px]:gap-6 py-6 border-b border-gray-300">
           <div className="flex items-center flex-col min-[550px]:flex-row gap-3 min-[550px]:gap-6 w-full max-xl:justify-center max-xl:max-w-xl max-xl:mx-auto">
             <div className="img-box">
               <img
@@ -32,16 +32,13 @@ function CartSection() {
                 className="xl:w-[140px] rounded-xl object-cover"
               />
             </div>
-            <div className="pro-data w-full max-w-sm ">
+            <div className="pro-data w-full max-w-sm  ">
               <h5 className="font-semibold text-xl leading-8 text-black max-[550px]:text-center">
                 Latest N-5 Perfuam
               </h5>
               <p className="font-normal text-lg leading-8 text-gray-500 my-2 min-[550px]:my-3 max-[550px]:text-center">
                 Perfumes
               </p>
-              <h6 className="font-medium text-lg leading-8 text-indigo-600  max-[550px]:text-center">
-                $120.00
-              </h6>
             </div>
           </div>
           <div className="flex items-center flex-col min-[550px]:flex-row w-full max-xl:max-w-xl max-xl:mx-auto gap-2 ">
@@ -58,22 +55,22 @@ function CartSection() {
                   <path
                     d="M16.5 11H5.5"
                     stroke=""
-                    stroke-width="1.6"
-                    stroke-linecap="round"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
                   />
                   <path
                     d="M16.5 11H5.5"
                     stroke=""
-                    stroke-opacity="0.2"
-                    stroke-width="1.6"
-                    stroke-linecap="round"
+                    strokeOpacity="0.2"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
                   />
                   <path
                     d="M16.5 11H5.5"
                     stroke=""
-                    stroke-opacity="0.2"
-                    stroke-width="1.6"
-                    stroke-linecap="round"
+                    strokeOpacity="0.2"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
                   />
                 </svg>
               </button>
@@ -95,22 +92,22 @@ function CartSection() {
                   <path
                     d="M11 5.5V16.5M16.5 11H5.5"
                     stroke=""
-                    stroke-width="1.6"
-                    stroke-linecap="round"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
                   />
                   <path
                     d="M11 5.5V16.5M16.5 11H5.5"
                     stroke=""
-                    stroke-opacity="0.2"
-                    stroke-width="1.6"
-                    stroke-linecap="round"
+                    strokeOpacity="0.2"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
                   />
                   <path
                     d="M11 5.5V16.5M16.5 11H5.5"
                     stroke=""
-                    stroke-opacity="0.2"
-                    stroke-width="1.6"
-                    stroke-linecap="round"
+                    strokeOpacity="0.2"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
                   />
                 </svg>
               </button>
@@ -120,7 +117,7 @@ function CartSection() {
             </h6>
           </div>
         </div>
-        <div className="bg-gray-50 rounded-xl p-6 w-full mb-8 max-lg:max-w-xl max-lg:mx-auto border-t border-gray-300">
+        <div className="bg-gray-50 rounded-xl p-6 w-full mb-8 max-lg:max-w-xl max-lg:mx-auto ">
           <div className="flex items-center justify-between w-full py-6">
             <p className="font-manrope font-medium text-2xl leading-9 text-gray-900">
               Total
@@ -131,7 +128,7 @@ function CartSection() {
           </div>
         </div>
         <div className="flex items-center flex-col sm:flex-row justify-center gap-3 mt-8">
-          <button className="rounded-full w-full max-w-[280px] py-4 text-center justify-center items-center bg-green-800 font-semibold text-lg text-white flex transition-all duration-500 hover:bg-green-700 hover:cursor-pointer">
+          <button className="rounded-full w-full max-w-[280px] py-4 text-center justify-center items-center bg-green-800 font-semibold text-lg text-white flex transition-all duration-500 hover:bg-green-600 hover:cursor-pointer">
             Continue to Payment
             <svg
               className="ml-2"
@@ -144,9 +141,9 @@ function CartSection() {
               <path
                 d="M8.75324 5.49609L14.2535 10.9963L8.75 16.4998"
                 stroke="white"
-                stroke-width="1.6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           </button>

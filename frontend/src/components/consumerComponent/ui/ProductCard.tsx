@@ -6,7 +6,7 @@ function ProductCard({product}:{product : Product}) {
     <div className=" lg:max-w-[320px]  hover:scale-101 md:max-w-[280px] max-w-[230px] border border-gray-200 container rounded-2xl md:shadow-xl shadow-lg md:mx-4 mx-2 md:my-6 my-4   ">
         <img
           src={product.productImage}
-          alt="product image"
+          alt={`${product.productName} Image`}
           className="rounded-t-2xl "
         />
       <div className=" p-2 w-full rounded-b-2xl bg-white">
