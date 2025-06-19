@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchProduct } from "../../api/consumer/consumerHome/fecthProduct";
-import ProductCard from "../../components/ui/ProductCard";
+import ProductCard from "../../components/consumerComponent/ui/ProductCard";
 export interface Product {
   id: number;
   productCategory: string;

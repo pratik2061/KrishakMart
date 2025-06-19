@@ -11,7 +11,7 @@ function MenuList() {
           to={"/consumer"}
           className={({ isActive }) =>
             `${
-              isActive ? "text-green-900 " : "text-amber-900"
+              isActive ? "text-green-900  " : "text-amber-900"
             } flex flex-wrap w-full space-x-4  hover:text-green-700`
           }
         >

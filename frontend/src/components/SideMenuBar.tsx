@@ -1,6 +1,6 @@
-import HomeLogo from "./ui/HomeLogo"
-import MenuFooter from "./ui/MenuFooter"
-import MenuList from "./ui/MenuList"
+import HomeLogo from "./consumerComponent/ui/HomeLogo"
+import MenuFooter from "./consumerComponent/ui/MenuFooter"
+import MenuList from "./consumerComponent/ui/MenuList"
 
 function SideMenuBar() {
   return (

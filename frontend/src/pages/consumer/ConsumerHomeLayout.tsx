@@ -9,10 +9,10 @@ function ConsumerHomeLayout() {
         <div className="h-[100vh] lg:block hidden w-[200px] fixed z-10 border-r border-gray-300 ">
           <SideMenuBar />
         </div>
-        <div className="lg:hidden min-h-screen w-[50px] bg-red-400 flex justify-center fixed ">
-          <IoMenu className="text-white text-2xl" />
+        <div className="lg:hidden min-h-screen w-[50px]  border-r border-gray-300 flex justify-center fixed pt-4 ">
+          <IoMenu className="text-black md:text-4xl text-3xl"  />
         </div>
-        <div className="w-full  lg:pl-[200px] pl-[50px] ">
+        <div className="w-full  lg:pl-[200px] pl-[50px]">
           <Outlet />
         </div>
       </div>

@@ -1,9 +1,9 @@
 import { FaUserAlt } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { IoLogOut } from "react-icons/io5";
-import { logoutAuthAxios } from "../../api/consumer/consumerAuth/auth";
+import { logoutAuthAxios } from "../../../api/consumer/consumerAuth/auth";
 import { useDispatch } from "react-redux";
-import { logoutUser } from "../../auth/slice/Auth-slice";
+import { logoutUser } from "../../../auth/slice/Auth-slice";
 import { toast } from "react-toastify";
 
 interface LogoutResponse {

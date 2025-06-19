@@ -1,16 +1,14 @@
-import type { Product } from "../../pages/consumer/ConsumerHome";
+import type { Product } from "../../../pages/consumer/ConsumerHome";
 
 
 function ProductCard({product}:{product : Product}) {
   return (
-    <div className=" lg:max-w-[320px] hover:scale-101 md:max-w-[280px] max-w-[230px] border border-gray-200 container rounded-2xl md:shadow-xl shadow-lg md:mx-4 mx-2 md:my-6 my-4   ">
-      <div className="overflow-hidden">
+    <div className=" lg:max-w-[320px]  hover:scale-101 md:max-w-[280px] max-w-[230px] border border-gray-200 container rounded-2xl md:shadow-xl shadow-lg md:mx-4 mx-2 md:my-6 my-4   ">
         <img
           src={product.productImage}
           alt="product image"
-          className="rounded-t-2xl hover:transition-transform hover:ease-in-out hover:duration-500"
+          className="rounded-t-2xl "
         />
-      </div>
       <div className=" p-2 w-full rounded-b-2xl bg-white">
         <h1 className="font-bold md:text-2xl text-xl   px-2 md:py-1 py-0 ">
           {product.productName}

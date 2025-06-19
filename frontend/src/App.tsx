@@ -13,6 +13,8 @@ import { UnauthorizedPage } from "./components/unauthorized";
 import { NotFoundPage } from "./components/NotFound";
 import ConsumerHomeLayout from "./pages/consumer/ConsumerHomeLayout";
 import ConsumerHome from "./pages/consumer/ConsumerHome";
+import ConsumerCartSection from "./pages/consumer/ConsumerCartSection";
+// import ConsumerCartSection from "./pages/consumer/ConsumerCartSection";
 
 function App() {
   const router = createBrowserRouter(
@@ -36,7 +38,8 @@ function App() {
 
         <Route element={<ProtectedRoutes allowableRoles="CONSUMER" />}>
           <Route path="/consumer" element={<ConsumerHomeLayout />}>
-            <Route index  element={<ConsumerHome/>}/>
+            <Route index element={<ConsumerHome />} />
+            <Route path="cart" element={<ConsumerCartSection />} />
           </Route>
         </Route>
       </>
