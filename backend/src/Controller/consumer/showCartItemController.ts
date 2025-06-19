@@ -10,6 +10,21 @@ export const showCartItemController = async (req: Request, res: Response) => {
       where: {
         userId: userData.id,
       },
+      select: {
+        id: true,
+        price: true,
+        quantity: true,
+        createdAt: true,
+        productId: true, 
+        product: {
+          select: {
+            id: true,
+            productName: true,
+            productImage: true,
+            productQuantity: true,
+          },
+        },
+      },
     });
     if (cartItem.length === 0) {
       res.status(STATUS_CODE.NOT_FOUND).json({
