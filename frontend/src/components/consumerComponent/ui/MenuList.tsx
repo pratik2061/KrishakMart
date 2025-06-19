@@ -9,11 +9,8 @@ function MenuList() {
       <div className="w-full text-xl font-bold flex  px-2 py-2 ">
         <NavLink
           to={"/consumer"}
-          className={({ isActive }) =>
-            `${
-              isActive ? "text-green-900  " : "text-amber-900"
-            } flex flex-wrap w-full space-x-4  hover:text-green-700`
-          }
+          className={` text-amber-950
+             flex flex-wrap w-full space-x-4  hover:text-green-900`}
         >
           <IoMdHome className="text-3xl " />
           <p className="">Home</p>
@@ -23,10 +20,9 @@ function MenuList() {
       <div className="w-full text-xl font-bold flex space-x-4  px-2 py-2">
         <NavLink
           to={"/consumer/cart"}
-          className={({ isActive }) =>
-            `${
-              isActive ? "text-green-900" : "text-amber-900"
-            } flex flex-wrap w-full space-x-4 hover:text-green-700 `
+          className={
+            ` text-amber-950
+            flex flex-wrap w-full space-x-4 hover:text-green-900 `
           }
         >
           <FaShoppingCart className="text-3xl " />
@@ -36,10 +32,9 @@ function MenuList() {
       <div className="w-full text-xl font-bold flex space-x-4  px-2 py-2">
         <NavLink
           to={"/consumer/order"}
-          className={({ isActive }) =>
-            `${
-              isActive ? "text-green-900" : "text-amber-900"
-            } flex flex-wrap w-full space-x-4 hover:text-green-700 
+          className={
+            `  text-amber-950
+             flex flex-wrap w-full space-x-4 hover:text-green-900 
               `
           }
         >

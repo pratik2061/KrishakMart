@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { fetchCartData } from "../../../api/consumer/consumerHome/fetchCartItem";
+import { IoClose } from "react-icons/io5";
+import { deleteCartProduct } from "../../../api/consumer/consumerHome/deleteCartProduct";
+import { toast } from "react-toastify";
 
 export interface cartProduct {
   id: number;
@@ -11,8 +14,8 @@ export interface cartProduct {
     productImage: string;
     productName: string;
     productQuantity: number;
-    productCategory:string,
-    productPrice:number
+    productCategory: string;
+    productPrice: number;
   };
 }
 
@@ -28,6 +31,24 @@ function CartSection() {
   const fetchProductData = async () => {
     const res = (await fetchCartData()) as fetchCartProductResponse;
     setCartItem(res.data.cartItem);
+  };
+
+  const deleteCartProductFunction = async (id: number) => {
+    const res = await deleteCartProduct(id);
+    if (res.success) {
+      toast(res.data, {
+        theme: "colored",
+        autoClose: 3000,
+        type: "success",
+      });
+      setCartItem((prev) => prev.filter((p) => p.product.id !== id));
+    } else {
+      toast(res.message, {
+        theme: "colored",
+        autoClose: 3000,
+        type: "error",
+      });
+    }
   };
 
   useEffect(() => {
@@ -46,7 +67,16 @@ function CartSection() {
           </p>
         </div>
         {cartItem.map((item) => (
-          <div key={item.id} className="grid grid-cols-1 lg:grid-cols-2 min-[550px]:gap-6 py-6 border-b border-gray-300">
+          <div
+            key={item.id}
+            className="grid grid-cols-1 lg:grid-cols-2 min-[550px]:gap-6 py-6 border-b border-gray-300 relative"
+          >
+            <button
+              onClick={() => deleteCartProductFunction(item.product.id)}
+              className="absolute right-4 hover:text-red-800  hover:cursor-pointer text-2xl top-5 "
+            >
+              <IoClose />
+            </button>
             <div className="flex items-center flex-col min-[550px]:flex-row gap-3 min-[550px]:gap-6 w-full max-xl:justify-center max-xl:max-w-xl max-xl:mx-auto">
               <div className="img-box">
                 <img
@@ -151,7 +181,7 @@ function CartSection() {
               Total
             </p>
             <h6 className="font-manrope font-medium text-2xl leading-9 text-indigo-500">
-               Rs. remaining
+              Rs. remaining
             </h6>
           </div>
         </div>

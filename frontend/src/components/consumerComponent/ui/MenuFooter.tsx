@@ -39,9 +39,8 @@ function MenuFooter() {
       <div className="px-2 py-2 ">
         <NavLink
           to={"/consumer/profile"}
-          className={({ isActive }) =>
-            `flex space-x-4 hover:cursor-pointer  hover:text-green-700${
-              isActive ? "text-green-900" : " text-amber-900 "
+          className={
+            `flex space-x-4 hover:cursor-pointer  hover:text-green-900  text-amber-950 
             }`
           }
         >
@@ -55,9 +54,8 @@ function MenuFooter() {
             logout();
           }}
           to={"/login"}
-          className={({ isActive }) =>
-            `flex space-x-4 hover:cursor-pointer hover:text-red-700 ${
-              isActive ? "text-green-900" : " text-amber-900"
+          className={
+            `flex space-x-4 hover:cursor-pointer hover:text-red-800  text-amber-950
             }`
           }
         >
