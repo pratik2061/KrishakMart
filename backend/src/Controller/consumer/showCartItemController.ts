@@ -22,6 +22,8 @@ export const showCartItemController = async (req: Request, res: Response) => {
             productName: true,
             productImage: true,
             productQuantity: true,
+            productCategory:true,
+            productPrice:true
           },
         },
       },
