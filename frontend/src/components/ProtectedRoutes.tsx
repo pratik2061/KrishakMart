@@ -35,7 +35,7 @@ export const ProtectedRoutes = ({
         setUser(storedUser);
       } else {
         toast("Session expired. Please log in again.", {
-          theme: "colored",
+          theme: "dark",
           type: "error",
           autoClose: 3000,
         });

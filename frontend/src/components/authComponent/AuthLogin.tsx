@@ -93,7 +93,7 @@ export default function AuthLogin() {
       const errorMsg = (result.payload as string) || "login failed";
 
       toast(errorMsg, {
-        theme: "colored",
+        theme: "dark",
         autoClose: 3000,
         type: "error",
       });

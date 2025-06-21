@@ -51,7 +51,7 @@ export const loginUser = createAsyncThunk(
       );
 
       toast(`${data.message}`, {
-        theme: "colored",
+        theme: "dark",
         type: "success",
         autoClose: 3000,
       });

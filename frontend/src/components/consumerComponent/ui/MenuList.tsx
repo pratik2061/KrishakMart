@@ -10,7 +10,7 @@ function MenuList() {
         <NavLink
           to={"/consumer"}
           className={` text-amber-950
-             flex flex-wrap w-full space-x-4  hover:text-green-900`}
+             flex flex-wrap w-full space-x-4  hover:text-green-700`}
         >
           <IoMdHome className="text-3xl " />
           <p className="">Home</p>
@@ -22,7 +22,7 @@ function MenuList() {
           to={"/consumer/cart"}
           className={
             ` text-amber-950
-            flex flex-wrap w-full space-x-4 hover:text-green-900 `
+            flex flex-wrap w-full space-x-4 hover:text-green-700 `
           }
         >
           <FaShoppingCart className="text-3xl " />
@@ -34,7 +34,7 @@ function MenuList() {
           to={"/consumer/order"}
           className={
             `  text-amber-950
-             flex flex-wrap w-full space-x-4 hover:text-green-900 
+             flex flex-wrap w-full space-x-4 hover:text-green-700 
               `
           }
         >

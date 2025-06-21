@@ -22,14 +22,14 @@ function MenuFooter() {
       toast(message, {
         type: "success",
         autoClose: 3000,
-        theme: "colored",
+        theme: "dark",
       });
     } catch (error) {
       const ErrorMessage = error as LogoutResponse;
       toast(ErrorMessage.data.message, {
         type: "error",
         autoClose: 3000,
-        theme: "colored",
+        theme: "dark",
       });
     }
   };
@@ -40,7 +40,7 @@ function MenuFooter() {
         <NavLink
           to={"/consumer/profile"}
           className={
-            `flex space-x-4 hover:cursor-pointer  hover:text-green-900  text-amber-950 
+            `flex space-x-4 hover:cursor-pointer  hover:text-green-700  text-amber-950 
             }`
           }
         >
@@ -55,7 +55,7 @@ function MenuFooter() {
           }}
           to={"/login"}
           className={
-            `flex space-x-4 hover:cursor-pointer hover:text-red-800  text-amber-950
+            `flex space-x-4 hover:cursor-pointer hover:text-red-700  text-amber-950
             }`
           }
         >

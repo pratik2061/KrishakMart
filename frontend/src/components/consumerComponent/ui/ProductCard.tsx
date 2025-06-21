@@ -17,14 +17,14 @@ function ProductCard({ product }: { product: Product }) {
 
     if (res.success) {
       toast(res.data, {
-        theme: "colored",
+        theme: "dark",
         autoClose: 3000,
         type: "success",
       });
       
     } else {
       toast(res.message, {
-        theme: "colored",
+        theme: "dark",
         autoClose: 3000,
         type: "warning",
       });
@@ -61,7 +61,7 @@ function ProductCard({ product }: { product: Product }) {
             onClick={() => {
               addCartProduct();
             }}
-            className="bg-green-800 hover:bg-green-700 font-bold text-white rounded-lg py-2 hover:cursor-pointer"
+            className="bg-green-600 hover:bg-green-700 font-bold text-white rounded-lg py-2 hover:cursor-pointer"
           >
             Add to cart
           </button>

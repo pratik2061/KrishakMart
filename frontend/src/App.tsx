@@ -49,7 +49,7 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
-      <ToastContainer />
+      <ToastContainer theme="dark"/>
     </>
   );
 }
