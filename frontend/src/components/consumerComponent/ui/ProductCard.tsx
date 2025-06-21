@@ -52,7 +52,7 @@ function ProductCard({ product }: { product: Product }) {
         <div className="px-2 md:py-2 py-4 grid md:grid-cols-[40%_auto] md:grid-rows-none grid-cols-none grid-rows-2 md:gap-1 gap-3 ">
           <div className="">
             <p className="font-extrabold md:text-[15px] text-[13px]">PRICE</p>
-            <p className="font-bold md:text-[20px] text-[18px]">
+            <p className="font-bold md:text-[20px] text-[18px] text-blue-900">
               Rs. {product.productPrice}
               <span className="md:text-2xl-[15px] text-[13px]">/kg</span>
             </p>

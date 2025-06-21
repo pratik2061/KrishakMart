@@ -14,7 +14,7 @@ import { NotFoundPage } from "./components/NotFound";
 import ConsumerHomeLayout from "./pages/consumer/ConsumerHomeLayout";
 import ConsumerHome from "./pages/consumer/ConsumerHome";
 import ConsumerCartSection from "./pages/consumer/ConsumerCartSection";
-// import ConsumerCartSection from "./pages/consumer/ConsumerCartSection";
+import ConsumerOrderSection from "./pages/consumer/ConsumerOrderSection";
 
 function App() {
   const router = createBrowserRouter(
@@ -40,6 +40,7 @@ function App() {
           <Route path="/consumer" element={<ConsumerHomeLayout />}>
             <Route index element={<ConsumerHome />} />
             <Route path="cart" element={<ConsumerCartSection />} />
+            <Route path="order" element={<ConsumerOrderSection />} />
           </Route>
         </Route>
       </>

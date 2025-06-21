@@ -36,7 +36,7 @@ function MenuFooter() {
 
   return (
     <div className="w-full h-full space-y-4">
-      <div className="px-2 py-2 ">
+      <div className="px-2 py-2 lg:block hidden">
         <NavLink
           to={"/consumer/profile"}
           className={
