@@ -1,5 +1,20 @@
+import { useEffect, useState } from "react";
+import { fetchOrder } from "../../../api/consumer/consumerHome/fetchOrder";
+import NoOrder from "../../NoOrder";
+
 function OrderSection() {
-  return (
+  const [order, setOrder] = useState([]);
+
+  const fetchOrderData = async () => {
+    const res = await fetchOrder();
+    console.log(res);
+  };
+  useEffect(() => {
+    fetchOrderData();
+  }, []);
+  return order.length == 0 ? (
+    <NoOrder />
+  ) : (
     <section className="py-24 relative">
       <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
         <div className="flex items-start flex-col gap-6 xl:flex-row ">
