@@ -15,12 +15,14 @@ import ConsumerHomeLayout from "./pages/consumer/ConsumerHomeLayout";
 import ConsumerHome from "./pages/consumer/ConsumerHome";
 import ConsumerCartSection from "./pages/consumer/ConsumerCartSection";
 import ConsumerOrderSection from "./pages/consumer/ConsumerOrderSection";
+import FarmerLogin from "./components/authComponent/FarmerAuthLogin";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
         <Route path="/login" element={<Login />} />
+        <Route path="/farmer/login" element={<FarmerLogin />} />
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
         <Route path="*" element={<NotFoundPage />} />
 
@@ -50,7 +52,7 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
-      <ToastContainer theme="dark"/>
+      <ToastContainer theme="dark" />
     </>
   );
 }

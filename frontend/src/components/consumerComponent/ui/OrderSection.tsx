@@ -3,7 +3,7 @@ import { fetchOrder } from "../../../api/consumer/consumerHome/fetchOrder";
 import NoOrder from "../../NoOrder";
 
 function OrderSection() {
-  const [order, setOrder] = useState([]);
+  const [order] = useState([]);
 
   const fetchOrderData = async () => {
     const res = await fetchOrder();

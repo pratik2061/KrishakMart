@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 import { addToCart } from "../../../api/consumer/consumerHome/addToCart";
 import type { Product } from "../../../pages/consumer/ConsumerHome";
+import { motion } from "framer-motion";
 
 export interface successType {
   data: {
@@ -9,7 +10,6 @@ export interface successType {
     };
   };
 }
-
 
 function ProductCard({ product }: { product: Product }) {
   const addCartProduct = async () => {
@@ -21,7 +21,6 @@ function ProductCard({ product }: { product: Product }) {
         autoClose: 3000,
         type: "success",
       });
-      
     } else {
       toast(res.message, {
         theme: "dark",
@@ -30,44 +29,52 @@ function ProductCard({ product }: { product: Product }) {
       });
     }
   };
+
   return (
-    <div className=" lg:max-w-[320px]  hover:scale-101 md:max-w-[280px] max-w-[230px] border border-gray-200 container rounded-2xl md:shadow-xl shadow-lg md:mx-4 mx-2 md:my-6 my-4   ">
-      <img
-        src={product.productImage}
-        alt={`${product.productName} Image`}
-        className="rounded-t-2xl "
-      />
-      <div className=" p-2 w-full rounded-b-2xl bg-white">
-        <h1 className="font-bold md:text-2xl text-xl   px-2 md:py-1 py-0 ">
+    <motion.div
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.98 }}
+      className="w-full max-w-[230px] sm:max-w-[280px] lg:max-w-[320px] border border-gray-200 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white mx-2 my-4 md:mx-4 md:my-6"
+    >
+      <div className="w-full aspect-[4/3] overflow-hidden rounded-t-2xl">
+        <img
+          src={product.productImage}
+          alt={`${product.productName} Image`}
+          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+          loading="lazy"
+        />
+      </div>
+
+      <div className="p-3">
+        <h1 className="font-bold text-xl sm:text-2xl mb-1">
           {product.productName}
         </h1>
-        <div className="px-2">
-          <span className=" bg-stone-500  text-white lg:text-[15px] md:text-[12px] text-[10px]   border border-neutral-400  p-[1px] md:rounded-md rounded-sm">
+        <div className="mb-2">
+          <span className="bg-stone-600 text-white text-xs sm:text-sm px-2 py-[2px] rounded-md">
             {product.productCategory}
           </span>
         </div>
-        <p className="px-2 tracking-tight text-wrap text-gray-700 md:py-4 py-2">
+        <p className="text-sm text-gray-700 mb-4 line-clamp-3">
           {product.productDescription}
         </p>
-        <div className="px-2 md:py-2 py-4 grid md:grid-cols-[40%_auto] md:grid-rows-none grid-cols-none grid-rows-2 md:gap-1 gap-3 ">
-          <div className="">
-            <p className="font-extrabold md:text-[15px] text-[13px]">PRICE</p>
-            <p className="font-bold md:text-[20px] text-[18px] text-blue-900">
+        <div className="grid grid-cols-1 sm:grid-cols-[40%_auto] gap-3 items-center">
+          <div>
+            <p className="font-semibold text-sm">PRICE</p>
+            <p className="text-blue-900 font-bold text-lg sm:text-xl">
               Rs. {product.productPrice}
-              <span className="md:text-2xl-[15px] text-[13px]">/kg</span>
+              <span className="text-sm"> /kg</span>
             </p>
           </div>
-          <button
-            onClick={() => {
-              addCartProduct();
-            }}
-            className="bg-green-600 hover:bg-green-700 font-bold text-white rounded-lg py-2 hover:cursor-pointer"
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={addCartProduct}
+            className="bg-green-600 hover:cursor-pointer hover:bg-green-700 text-white font-bold py-2 rounded-lg w-full transition-colors"
           >
             Add to cart
-          </button>
+          </motion.button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

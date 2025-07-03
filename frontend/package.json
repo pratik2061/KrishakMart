@@ -16,6 +16,7 @@
     "@tailwindcss/vite": "^4.1.8",
     "axios": "^1.9.0",
     "clsx": "^2.1.1",
+    "framer-motion": "^12.23.0",
     "motion": "^12.15.0",
     "primereact": "^10.9.6",
     "react": "^19.1.0",
