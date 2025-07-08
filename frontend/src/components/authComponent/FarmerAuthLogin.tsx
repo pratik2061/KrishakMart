@@ -2,15 +2,57 @@ import { useState } from "react";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { RxEyeOpen } from "react-icons/rx";
 import { ClipLoader } from "react-spinners";
+import { loginFarmer } from "../../auth/slice/farmerAuthThunk";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch } from "../../auth/store/authStore";
+import { toast } from "react-toastify";
+
+interface state {
+  auth: {
+    userData: {
+      id: number;
+      email: string;
+      role: string;
+    } | null;
+    status: string;
+    error: string | null;
+  };
+}
 
 export default function FarmerLogin() {
+  const status = useSelector((state: state) => state.auth.status);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
+    const result = await dispatch(loginFarmer({ email, password }));
+
+    if (loginFarmer.fulfilled.match(result)) {
+      const farmerRole = result.payload.role;
+
+      switch (farmerRole) {
+        case "FARMER":
+          navigate("/farmer");
+
+          break;
+
+        default:
+          navigate("/unauthorized");
+      }
+    } else if (loginFarmer.rejected.match(result)) {
+      const errorMsg = (result.payload as string) || "login failed";
+
+      toast(errorMsg, {
+        theme: "dark",
+        autoClose: 3000,
+        type: "error",
+      });
+    }
   };
 
   return (
@@ -70,11 +112,15 @@ export default function FarmerLogin() {
           </div>
 
           <button
+            disabled={status === "loading"}
             type="submit"
             className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl transition duration-300"
           >
-            <ClipLoader size={20} color="white" loading={false} />
-            <span className="ml-2">Log In</span>
+            {status === "loading" ? (
+              <ClipLoader color="white" size={20} />
+            ) : (
+              "Log In"
+            )}
           </button>
         </form>
 

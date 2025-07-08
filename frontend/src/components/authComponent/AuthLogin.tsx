@@ -45,9 +45,6 @@ export default function AuthLogin() {
           case "ADMIN":
             navigate("/admin");
             break;
-          case "FARMER":
-            navigate("/farmer");
-            break;
           case "CONSUMER":
             navigate("/consumer");
             break;
@@ -79,10 +76,6 @@ export default function AuthLogin() {
           break;
         case "CONSUMER":
           navigate("/consumer");
-
-          break;
-        case "FARMER":
-          navigate("/farmer");
 
           break;
 

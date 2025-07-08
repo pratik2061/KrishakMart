@@ -2,7 +2,7 @@ import { api } from "../authServices";
 
 export const farmerLoginAuth = async (email: string, password: string) => {
   try {
-    const res = await api.post("/farmer/login", { email, password });
+    const res = await api.post("auth/farmer/login", { email, password });
     return res;
   } catch (error) {
     return error;
@@ -11,7 +11,7 @@ export const farmerLoginAuth = async (email: string, password: string) => {
 
 export const farmerLogoutAuth = async () =>{
     try {
-        const res = await api.post('/farmer/logout')
+        const res = await api.post('auth/farmer/logout')
         return res
     } catch (error) {
         return error
