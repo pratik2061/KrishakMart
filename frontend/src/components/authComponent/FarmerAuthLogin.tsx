@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { RxEyeOpen } from "react-icons/rx";
 import { ClipLoader } from "react-spinners";
-import { loginFarmer } from "../../auth/slice/farmerAuthThunk";
+import { loginFarmer, verifyToken } from "../../auth/slice/farmerAuthThunk";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../../auth/store/authStore";
 import { toast } from "react-toastify";
 
 interface state {
-  auth: {
-    userData: {
+  farmerAuth: {
+    farmerData: {
       id: number;
       email: string;
       role: string;
@@ -21,7 +21,7 @@ interface state {
 }
 
 export default function FarmerLogin() {
-  const status = useSelector((state: state) => state.auth.status);
+  const status = useSelector((state: state) => state.farmerAuth.status);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -54,6 +54,37 @@ export default function FarmerLogin() {
       });
     }
   };
+
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const res = await verifyToken(); // Verifies session from server
+        const storedFarmer = JSON.parse(
+          localStorage.getItem("farmer_data") || "null"
+        );
+
+        if (
+          storedFarmer &&
+          res?.id === storedFarmer.id &&
+          res?.email === storedFarmer.email &&
+          res?.role === storedFarmer.role
+        ) {
+          switch (res.role) {
+            case "FARMER":
+              navigate("/farmer");
+              break;
+            default:
+              navigate("/unauthorized");
+          }
+        }
+      } catch {
+        localStorage.removeItem("farmer_data"); // optional: cleanup
+        navigate("/farmer/login");
+      }
+    };
+
+    checkToken();
+  }, [navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-green-50">

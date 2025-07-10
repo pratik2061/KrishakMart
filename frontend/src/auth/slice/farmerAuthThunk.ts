@@ -66,10 +66,9 @@ export const loginFarmer = createAsyncThunk(
 
       if (typeof error === "object" && error !== null && "response" in error) {
         ErrorMessage = (error as { response: errorTypes }).response;
-        // Reject properly
         return rejectWithValue(ErrorMessage.data.message);
+        
       }
-
       return rejectWithValue("Something went wrong");
     }
   }
