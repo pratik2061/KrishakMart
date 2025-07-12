@@ -17,6 +17,7 @@ import ConsumerCartSection from "./pages/consumer/ConsumerCartSection";
 import ConsumerOrderSection from "./pages/consumer/ConsumerOrderSection";
 import FarmerLogin from "./components/authComponent/FarmerAuthLogin";
 import { FarmerProtectedRoutes } from "./components/FarmerProtectedRoutes";
+import FarmerHomeLayout from "./pages/farmer/FarmerHomeLayout";
 
 function App() {
   const router = createBrowserRouter(
@@ -34,7 +35,7 @@ function App() {
         </Route>
 
         <Route element={<FarmerProtectedRoutes allowableRoles="FARMER" />}>
-          <Route path="/farmer">
+          <Route path="/farmer" element={<FarmerHomeLayout/>}>
             <Route index element={<FarmerHome />} />
           </Route>
         </Route>

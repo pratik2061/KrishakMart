@@ -1,5 +1,5 @@
 import { FaUserAlt } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { IoLogOut } from "react-icons/io5";
 import { logoutAuthAxios } from "../../../api/consumer/consumerAuth/auth";
 import { useDispatch } from "react-redux";
@@ -13,6 +13,11 @@ interface LogoutResponse {
 }
 
 function MenuFooter() {
+  const location = useLocation();
+  const path = location.pathname;
+  const isConsumerPath = path === "/consumer" || path.startsWith("/consumer/");
+  const isFarmerPath = path === "/farmer" || path.startsWith("/farmer/");
+  const isAdminPath = path === "/admin" || path.startsWith("/admin/");
   const dispatch = useDispatch();
   const logout = async () => {
     try {
@@ -38,11 +43,17 @@ function MenuFooter() {
     <div className="w-full h-full space-y-4">
       <div className="px-2 py-2 lg:block hidden">
         <NavLink
-          to={"/consumer/profile"}
-          className={
-            `flex space-x-4 hover:cursor-pointer  hover:text-green-700  text-amber-950 
-            }`
+          to={
+            isConsumerPath
+              ? "/consumer/profile"
+              : isFarmerPath
+              ? "/farmer/profile"
+              : isAdminPath
+              ? "/admin/profile"
+              : "/unauthorized"
           }
+          className={`flex space-x-4 hover:cursor-pointer  hover:text-green-700  text-amber-950 
+            }`}
         >
           <FaUserAlt className="text-2xl" />
           <span className="text-xl font-bold">Profile</span>
@@ -53,11 +64,17 @@ function MenuFooter() {
           onClick={() => {
             logout();
           }}
-          to={"/login"}
-          className={
-            `flex space-x-4 hover:cursor-pointer hover:text-red-700  text-amber-950
-            }`
+          to={
+            isConsumerPath
+              ? '/login'
+              : isFarmerPath
+              ? "/farmer/login"
+              : isAdminPath
+              ? '/login'
+              : "/unauthorized"
           }
+          className={`flex space-x-4 hover:cursor-pointer hover:text-red-700  text-amber-950
+            }`}
         >
           <IoLogOut className="text-2xl" />
           <span className="text-xl font-bold">Logout</span>

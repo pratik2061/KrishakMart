@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { authSuccessTypes } from "../../types/authTypes";
 import { toast } from "react-toastify";
 import { api } from "../../api/authServices";
-import { farmerLoginAuth } from "../../api/farmerAuth/farmerAuth";
+import { farmerLoginAuth } from "../../api/farmer/farmerAuth/farmerAuth";
 
 interface errorTypes {
   data: {

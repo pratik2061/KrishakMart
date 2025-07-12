@@ -1,4 +1,4 @@
-import { api } from "../authServices";
+import { api } from "../../authServices";
 
 export const farmerLoginAuth = async (email: string, password: string) => {
   try {
