@@ -1,8 +1,28 @@
 import { motion } from "framer-motion";
 import type { Product } from "../../../pages/farmer/FarmerHome";
 import { FaLeaf, FaEdit, FaTrash } from "react-icons/fa";
+import { removeProduct } from "../../../api/farmer/farmerHome/removeProduct";
+import { toast } from "react-toastify";
 
-function FarmerProductCard({ product }: { product: Product }) {
+function FarmerProductCard({ product, onDelete }: { product: Product;onDelete: (id: number) => void; }) {
+  const removeFarmerOwnProduct = async (id: number) => {
+    const res = await removeProduct(id);
+
+    if (res.success) {
+      toast(res.data, {
+        theme: "dark",
+        autoClose: 3000,
+        type: "success",
+      });
+      onDelete(id); 
+    } else {
+      toast(res.message, {
+        theme: "dark",
+        autoClose: 3000,
+        type: "warning",
+      });
+    }
+  };
   return (
     <motion.div
       whileHover={{ scale: 1.02, y: -5 }}
@@ -58,13 +78,17 @@ function FarmerProductCard({ product }: { product: Product }) {
               shadow-md hover:shadow-xl hover:shadow-amber-500/30 
               transition-all duration-300 border border-amber-500/30 hover:cursor-pointer"
           >
-            <FaEdit className="text-white group-hover/edit:scale-110 transition-transform duration-300" size={16} />
+            <FaEdit
+              className="text-white group-hover/edit:scale-110 transition-transform duration-300"
+              size={16}
+            />
             Edit
             <div className="absolute inset-0 bg-amber-500/20 opacity-0 group-hover/edit:opacity-100 transition-opacity duration-300" />
           </motion.button>
 
           {/* Remove Button */}
           <motion.button
+            onClick={() => removeFarmerOwnProduct(product.id)}
             whileTap={{ scale: 0.95 }}
             whileHover={{ scale: 1.02 }}
             className="group/remove relative flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl 
@@ -74,7 +98,10 @@ function FarmerProductCard({ product }: { product: Product }) {
               shadow-md hover:shadow-xl hover:shadow-red-500/30 
               transition-all duration-300 border border-red-500/30 hover:cursor-pointer"
           >
-            <FaTrash className="text-white group-hover/remove:scale-110 transition-transform duration-300" size={16} />
+            <FaTrash
+              className="text-white group-hover/remove:scale-110 transition-transform duration-300"
+              size={16}
+            />
             Remove
             <div className="absolute inset-0 bg-red-500/20 opacity-0 group-hover/remove:opacity-100 transition-opacity duration-300" />
           </motion.button>

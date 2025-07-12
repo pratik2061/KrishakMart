@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import NoProduct from '/no_product.jpg';
+import NoProduct from '/no_product_in_cart.jpg';
 
 const NoProductInCart: React.FC = () => {
   return (

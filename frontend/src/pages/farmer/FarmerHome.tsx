@@ -30,7 +30,6 @@ function FarmerHome() {
     const res = (await fetchOwnProducts()) as FetchProductResponse;
     setProductData(res.data.products);
   };
-  console.log(productData);
 
   useEffect(() => {
     fetchFarmerOwnProduct();
@@ -72,7 +71,13 @@ function FarmerHome() {
         className="w-full md:px-14 px-6 py-8 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         {productData.map((product, index) => (
-          <FarmerProductCard product={product} key={index} />
+          <FarmerProductCard
+            product={product}
+            key={index}
+            onDelete={(id) =>
+              setProductData((prev) => prev.filter((p) => p.id !== id))
+            }
+          />
         ))}
       </motion.div>
     </div>
