@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
-import { STATUS_CODE } from "../../Constants";
-import prisma from "../../Db/db.config";
 import { loginPayload } from "../../types/Payload";
+import prisma from "../../Db/db.config";
 import { productSchema } from "../../zod/productSchema";
+import { STATUS_CODE } from "../../Constants";
+import Stream from "stream";
+import cloudinary from "../../utils/cloudinary";
 
 export const addProductController = async (req: Request, res: Response) => {
   try {
@@ -12,10 +14,10 @@ export const addProductController = async (req: Request, res: Response) => {
         userId: userData.id,
       },
     });
+
     const {
       productName,
       productDescription,
-      productImage,
       productPrice,
       productQuantity,
       productCategory,
@@ -28,32 +30,51 @@ export const addProductController = async (req: Request, res: Response) => {
         message: "Invalid input",
         error: parsedInput.error,
       });
+    } else if (!farmer_data?.isVerified) {
+      res.status(STATUS_CODE.FORBIDDEN).json({
+        message: "You are not allowed to add products",
+      });
+    } else if (!req.file) {
+      res.status(STATUS_CODE.BAD_REQUEST).json({
+        message: "Image file is required",
+      });
     } else {
-      if (farmer_data?.isVerified === true) {
-        await prisma.product.create({
-          data: {
-            userId: userData.id,
-            productName,
-            productDescription,
-            productImage,
-            productPrice,
-            productQuantity,
-            productCategory,
-          },
-        });
-        res.status(STATUS_CODE.CREATED).json({
-          message: "Product added successfully",
-        });
-      } else {
-        res.status(STATUS_CODE.FORBIDDEN).json({
-          message: "You are not allowed to add products",
-        });
-      }
+      const bufferStream = new Stream.PassThrough();
+      bufferStream.end(req.file.buffer);
+
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { folder: "products" },
+        async (error, result) => {
+          if (error) {
+            res.status(500).json({
+              error: "Cloudinary upload failed",
+              detail: error,
+            });
+          } else if (!result?.secure_url) {
+            res.status(500).json({ error: "Upload failed" });
+          } else {
+            const product = await prisma.product.create({
+              data: {
+                userId: userData.id,
+                productName,
+                productDescription,
+                productImage: result.secure_url,
+                productPrice: parseFloat(productPrice),
+                productQuantity: parseInt(productQuantity),
+                productCategory,
+              },
+            });
+            res.status(201).json({ success: true, product });
+          }
+        }
+      );
+
+      bufferStream.pipe(uploadStream);
     }
   } catch (error) {
     res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({
       message: "Error adding product",
-      error: error,
+      error,
     });
   }
 };

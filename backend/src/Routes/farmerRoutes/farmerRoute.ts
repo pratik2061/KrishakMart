@@ -7,12 +7,13 @@ import { showOrderController } from '../../Controller/farmer/showOrderController
 import { updateOrderStatusController } from '../../Controller/farmer/updateOrderStatusController'
 import { updateProductController } from '../../Controller/farmer/updateProductController'
 import { deleteProductController } from '../../Controller/farmer/deleteProductController'
+import upload from '../../utils/upload'
 
 const routes = Router()
 
 routes.get('/', isFarmer,farmerLandingController)
 //adding products
-routes.post('/product/add',isFarmer,addProductController)
+routes.post('/product/add',isFarmer,upload.single("image"),addProductController)
 routes.get('/product',isFarmer,showProductsController)
 routes.post('/product/update/:id',isFarmer,updateProductController)
 routes.post('/product/delete/:id',isFarmer,deleteProductController)
