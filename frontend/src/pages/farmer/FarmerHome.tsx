@@ -3,6 +3,8 @@ import { IoAdd } from "react-icons/io5";
 import FarmerProductCard from "../../components/farmerComponent/ui/FarmerProductCard";
 import { fetchOwnProducts } from "../../api/farmer/farmerHome/fetchOwnProducts";
 import { useEffect, useState } from "react";
+import NoProduct from "../../components/NoProduct";
+import { useNavigate } from "react-router-dom";
 
 export interface Product {
   id: number;
@@ -25,6 +27,7 @@ export interface FetchProductResponse {
 
 function FarmerHome() {
   const [productData, setProductData] = useState<Product[]>([]);
+  const navigate = useNavigate()
 
   const fetchFarmerOwnProduct = async () => {
     const res = (await fetchOwnProducts()) as FetchProductResponse;
@@ -41,45 +44,54 @@ function FarmerHome() {
         <h1 className="font-bold lg:text-2xl md:text-xl text-lg tracking-wide flex items-center gap-2">
           🧺 Products
         </h1>
-        <motion.button
-          whileTap={{ scale: 0.95 }}
-          whileHover={{ scale: 1.02 }}
-          className="group/add relative flex items-center gap-2 px-5 py-3 rounded-xl 
+        {productData.length === 0 ? (
+          ""
+        ) : (
+          <motion.button
+          onClick={()=> navigate('/farmer/product/add')}
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            className="group/add relative flex items-center gap-2 px-5 py-3 rounded-xl 
              bg-gradient-to-b from-green-600 to-green-700 
              hover:from-green-700 hover:to-green-800 
              text-white font-bold text-sm sm:text-base 
              shadow-md hover:shadow-lg hover:shadow-emerald-500/30 
              transition-all duration-300 border border-green-500/30 overflow-hidden hover:cursor-pointer"
-        >
-          {/* Optional background shine on hover */}
-          <div className="absolute inset-0 bg-green-500/20 opacity-0 group-hover/add:opacity-100 transition-opacity duration-300" />
+          >
+            {/* Optional background shine on hover */}
+            <div className="absolute inset-0 bg-green-500/20 opacity-0 group-hover/add:opacity-100 transition-opacity duration-300" />
 
-          {/* Content */}
-          <IoAdd
-            size={18}
-            className="text-white group-hover/add:scale-110 transition-transform duration-300"
-          />
-          <span className="tracking-wide">ADD PRODUCT</span>
-        </motion.button>
+            {/* Content */}
+            <IoAdd
+              size={18}
+              className="text-white group-hover/add:scale-110 transition-transform duration-300"
+            />
+            <span className="tracking-wide">ADD PRODUCT</span>
+          </motion.button>
+        )}
       </div>
 
       {/* Product Grid */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="w-full md:px-14 px-6 py-8 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-      >
-        {productData.map((product, index) => (
-          <FarmerProductCard
-            product={product}
-            key={index}
-            onDelete={(id) =>
-              setProductData((prev) => prev.filter((p) => p.id !== id))
-            }
-          />
-        ))}
-      </motion.div>
+      {productData.length === 0 ? (
+        <NoProduct />
+      ) : (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="w-full md:px-14 px-6 py-8 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        >
+          {productData.map((product, index) => (
+            <FarmerProductCard
+              product={product}
+              key={index}
+              onDelete={(id) =>
+                setProductData((prev) => prev.filter((p) => p.id !== id))
+              }
+            />
+          ))}
+        </motion.div>
+      )}
     </div>
   );
 }
