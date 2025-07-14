@@ -1,19 +1,54 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { addProduct } from "../../../api/farmer/farmerHome/addProduct";
+import { toast } from "react-toastify";
 
 export default function ProductForm() {
   const [imageName, setImageName] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [category, setCategory] = useState("");
+  const navigate = useNavigate();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
+      setImageFile(e.target.files[0]);
       setImageName(e.target.files[0].name);
     }
+  };
+  const addProductFunctionHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!imageFile) {
+      toast("upload an image", {
+        theme: "dark",
+        autoClose: 3000,
+        type: "warning",
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("productName", name);
+    formData.append("productDescription", description);
+    formData.append("productPrice", price);
+    formData.append("productQuantity", quantity);
+    formData.append("productCategory", category);
+    formData.append("image", imageFile);
+    const res = await addProduct(formData);
+    console.log(res);
+    navigate("/farmer");
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-8">
       <motion.form
-      encType="multipart/form-data"
+        onSubmit={addProductFunctionHandler}
+        encType="multipart/form-data"
         className="w-full max-w-2xl bg-white shadow-xl rounded-3xl p-4 md:p-8 space-y-6"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -30,6 +65,7 @@ export default function ProductForm() {
           </label>
           <input
             type="text"
+            onChange={(e) => setName(e.target.value)}
             placeholder="Enter product name"
             className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 transition"
           />
@@ -41,6 +77,7 @@ export default function ProductForm() {
             Product Description
           </label>
           <textarea
+            onChange={(e) => setDescription(e.target.value)}
             placeholder="Write short description"
             className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 transition"
             rows={4}
@@ -56,7 +93,6 @@ export default function ProductForm() {
           {!imageName ? (
             <label className="flex items-center gap-3 p-3 bg-green-50 border border-green-300 rounded-xl cursor-pointer hover:bg-green-100 transition">
               <input
-              
                 type="file"
                 accept="image/*"
                 className="hidden"
@@ -98,6 +134,7 @@ export default function ProductForm() {
           </label>
           <input
             type="number"
+            onChange={(e) => setPrice(e.target.value)}
             placeholder="e.g. 120"
             className="w-full px-4 py-2 border border-gray-300 rounded-xl 
               focus:outline-none focus:ring-2 focus:ring-green-400 transition
@@ -114,6 +151,7 @@ export default function ProductForm() {
           </label>
           <input
             type="text"
+            onChange={(e) => setCategory(e.target.value)}
             placeholder="e.g. Vegetables, Fruits, etc."
             className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 transition"
           />
@@ -126,6 +164,7 @@ export default function ProductForm() {
           </label>
           <input
             type="number"
+            onChange={(e) => setQuantity(e.target.value)}
             placeholder="Enter quantity"
             className="w-full px-4 py-2 border border-gray-300 rounded-xl 
               focus:outline-none focus:ring-2 focus:ring-green-400 transition
@@ -140,9 +179,9 @@ export default function ProductForm() {
           type="submit"
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
-          className="w-full py-3 mt-2 bg-green-600 text-white text-lg font-semibold rounded-xl shadow-md hover:bg-green-700 transition"
+          className="w-full py-3 mt-2 hover:cursor-pointer bg-green-600 text-white text-lg font-semibold rounded-xl shadow-md hover:bg-green-700 transition"
         >
-          Submit Product
+          Add Product
         </motion.button>
       </motion.form>
     </div>
