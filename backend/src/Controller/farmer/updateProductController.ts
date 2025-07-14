@@ -28,9 +28,11 @@ export const updateProductController = async (req: Request, res: Response) => {
           userId: userData.id,
         },
         data: {
-          productPrice: productPrice ? productPrice : findProduct.productPrice,
+          productPrice: productPrice
+            ? parseInt(productPrice)
+            : findProduct.productPrice,
           productQuantity: productQuantity
-            ? productQuantity
+            ? parseInt(productQuantity)
             : findProduct.productQuantity,
         },
       });
