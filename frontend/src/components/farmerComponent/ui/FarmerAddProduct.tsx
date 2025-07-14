@@ -1,9 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addProduct } from "../../../api/farmer/farmerHome/addProduct";
 import { toast } from "react-toastify";
-
+import { ClipLoader } from "react-spinners";
+interface resType{
+  data:{
+    success: boolean
+  }
+}
 export default function ProductForm() {
   const [imageName, setImageName] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -12,6 +18,7 @@ export default function ProductForm() {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [category, setCategory] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,18 +27,19 @@ export default function ProductForm() {
       setImageName(e.target.files[0].name);
     }
   };
+
   const addProductFunctionHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!imageFile) {
-      toast("upload an image", {
+      toast.warn("Please upload an image", {
         theme: "dark",
         autoClose: 3000,
-        type: "warning",
       });
       return;
     }
 
+    setLoading(true);
     const formData = new FormData();
     formData.append("productName", name);
     formData.append("productDescription", description);
@@ -39,9 +47,29 @@ export default function ProductForm() {
     formData.append("productQuantity", quantity);
     formData.append("productCategory", category);
     formData.append("image", imageFile);
-    const res = await addProduct(formData);
-    console.log(res);
-    navigate("/farmer");
+
+    try {
+      const res = await addProduct(formData) as resType;
+      if (res.data.success === true) {
+        toast.success("Product added successfully!", {
+          theme: "dark",
+          autoClose: 3000,
+        });
+        navigate("/farmer");
+      } else {
+        toast.error("Failed to add product", {
+          theme: "dark",
+          autoClose: 3000,
+        });
+      }
+    } catch (err) {
+      toast.error("Something went wrong!", {
+        theme: "dark",
+        autoClose: 3000,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -117,7 +145,10 @@ export default function ProductForm() {
                 </label>
                 <button
                   type="button"
-                  onClick={() => setImageName("")}
+                  onClick={() => {
+                    setImageFile(null);
+                    setImageName("");
+                  }}
                   className="text-sm text-red-600 font-medium hover:underline"
                 >
                   Remove
@@ -174,14 +205,15 @@ export default function ProductForm() {
           />
         </div>
 
-        {/* Submit Button */}
+        {/* Submit Button with Loading */}
         <motion.button
           type="submit"
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          className="w-full py-3 mt-2 hover:cursor-pointer bg-green-600 text-white text-lg font-semibold rounded-xl shadow-md hover:bg-green-700 transition"
+          disabled={loading}
+          whileHover={{ scale: loading ? 1 : 1.03 }}
+          whileTap={{ scale: loading ? 1 : 0.97 }}
+          className="w-full py-3 mt-2 bg-green-600 text-white text-lg font-semibold rounded-xl shadow-md hover:bg-green-700 transition flex items-center justify-center"
         >
-          Add Product
+          {loading ? <ClipLoader size={22} color="#fff" /> : "Add Product"}
         </motion.button>
       </motion.form>
     </div>

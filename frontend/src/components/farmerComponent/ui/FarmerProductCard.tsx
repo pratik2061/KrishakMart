@@ -3,8 +3,16 @@ import type { Product } from "../../../pages/farmer/FarmerHome";
 import { FaLeaf, FaEdit, FaTrash } from "react-icons/fa";
 import { removeProduct } from "../../../api/farmer/farmerHome/removeProduct";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-function FarmerProductCard({ product, onDelete }: { product: Product;onDelete: (id: number) => void; }) {
+function FarmerProductCard({
+  product,
+  onDelete,
+}: {
+  product: Product;
+  onDelete: (id: number) => void;
+}) {
+  const navigate = useNavigate();
   const removeFarmerOwnProduct = async (id: number) => {
     const res = await removeProduct(id);
 
@@ -14,7 +22,7 @@ function FarmerProductCard({ product, onDelete }: { product: Product;onDelete: (
         autoClose: 3000,
         type: "success",
       });
-      onDelete(id); 
+      onDelete(id);
     } else {
       toast(res.message, {
         theme: "dark",
@@ -22,6 +30,9 @@ function FarmerProductCard({ product, onDelete }: { product: Product;onDelete: (
         type: "warning",
       });
     }
+  };
+  const gotoEditPageFunction = (product : Product) => {
+    navigate("/farmer/product/edit",{state: {product}});
   };
   return (
     <motion.div
@@ -69,6 +80,7 @@ function FarmerProductCard({ product, onDelete }: { product: Product;onDelete: (
         <div className="flex gap-3">
           {/* Edit Button */}
           <motion.button
+            onClick={() => gotoEditPageFunction(product)}
             whileTap={{ scale: 0.95 }}
             whileHover={{ scale: 1.02 }}
             className="group/edit relative flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl 

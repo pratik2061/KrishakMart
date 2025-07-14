@@ -77,7 +77,7 @@ function CartSection() {
 
   useEffect(() => {
     const total = cartItem.reduce(
-      (acc, item) => acc + item.price * item.quantity,
+      (acc, item) => acc + item.product.productPrice * item.quantity,
       0
     );
     setTotalPrice(total);
@@ -119,7 +119,7 @@ function CartSection() {
                 {/* Delete Button */}
                 <button
                   onClick={() => deleteCartProductFunction(item.product.id)}
-                  className="absolute right-4 top-4 text-gray-400 hover:text-red-600 transition-colors z-10"
+                  className="absolute right-4 hover:cursor-pointer top-4 text-gray-400 hover:text-red-600 transition-colors z-10"
                   aria-label="Remove product"
                 >
                   <IoClose size={24} />
@@ -149,7 +149,9 @@ function CartSection() {
                     </p>
                     <p className="text-emerald-600 font-semibold mt-2 text-sm sm:text-base">
                       Rs. {item.product.productPrice}{" "}
-                      <span className="text-xs sm:text-sm text-gray-600">/kg</span>
+                      <span className="text-xs sm:text-sm text-gray-600">
+                        /kg
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -185,9 +187,11 @@ function CartSection() {
 
                 {/* Price */}
                 <div className="col-span-12 lg:col-span-3 flex flex-col justify-center items-center mt-4 lg:mt-0">
-                  <p className="text-xs sm:text-sm text-gray-500 mb-1">Subtotal</p>
+                  <p className="text-xs sm:text-sm text-gray-500 mb-1">
+                    Subtotal
+                  </p>
                   <p className="text-emerald-600 font-bold text-xl sm:text-2xl leading-none">
-                    Rs. {item.price * item.quantity}
+                    Rs. {item.product.productPrice * item.quantity}
                   </p>
                 </div>
               </motion.div>
@@ -207,7 +211,7 @@ function CartSection() {
                 Rs. {totalPrice}
               </span>
             </div>
-            <button className="w-full mt-6 bg-gradient-to-b from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold py-4 rounded-xl transition-all flex items-center justify-center gap-3 text-lg shadow-lg hover:shadow-xl">
+            <button className="w-full hover:cursor-pointer mt-6 bg-gradient-to-b from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold py-4 rounded-xl transition-all flex items-center justify-center gap-3 text-lg shadow-lg hover:shadow-xl">
               Continue to Payment
               <svg
                 xmlns="http://www.w3.org/2000/svg"

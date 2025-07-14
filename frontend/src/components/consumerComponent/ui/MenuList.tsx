@@ -19,7 +19,15 @@ function MenuList() {
   return (
     <div className="w-full h-full space-y-4 py-6 px-2">
       <NavLink
-        to={isConsumerPath? '/consumer' : isFarmerPath ? '/farmer' : isAdminPath ? '/admin' : '/unauthorized'}
+        to={
+          isConsumerPath
+            ? "/consumer"
+            : isFarmerPath
+            ? "/farmer"
+            : isAdminPath
+            ? "/admin"
+            : "/unauthorized"
+        }
         end
         className={({ isActive }) =>
           `${navItemClass} ${
@@ -31,21 +39,47 @@ function MenuList() {
         <p>Home</p>
       </NavLink>
 
-      <NavLink
-        to={isConsumerPath? '/consumer/cart' : isFarmerPath ? '/farmer/product' : isAdminPath ? '/admin' : '/unauthorized'}
-        end
-        className={({ isActive }) =>
-          `${navItemClass} ${
-            isActive ? "bg-green-100 text-green-800" : "text-amber-950"
-          } hover:bg-yellow-50 hover:text-green-700`
-        }
-      >
-        <FaShoppingCart className={iconClass} />
-        <p>{isConsumerPath ? 'Cart' : isFarmerPath ? 'Farmer' : isAdminPath ? "Admin" : null}</p>
-      </NavLink>
+      {isConsumerPath ? (
+        <NavLink
+          to={
+            isConsumerPath
+              ? "/consumer/cart"
+              : isFarmerPath
+              ? "/farmer/product"
+              : isAdminPath
+              ? "/admin"
+              : "/unauthorized"
+          }
+          end
+          className={({ isActive }) =>
+            `${navItemClass} ${
+              isActive ? "bg-green-100 text-green-800" : "text-amber-950"
+            } hover:bg-yellow-50 hover:text-  green-700`
+          }
+        >
+          {isConsumerPath ? <FaShoppingCart className={iconClass} /> : null}
+          <p>
+            {isConsumerPath
+              ? "Cart"
+              : isFarmerPath
+              ? null
+              : isAdminPath
+              ? "Admin"
+              : null}
+          </p>
+        </NavLink>
+      ) : null}
 
       <NavLink
-        to={isConsumerPath? '/consumer/order' : isFarmerPath ? '/farmer/order' : isAdminPath ? '/admin' : '/unauthorized'}
+        to={
+          isConsumerPath
+            ? "/consumer/order"
+            : isFarmerPath
+            ? "/farmer/order"
+            : isAdminPath
+            ? "/admin"
+            : "/unauthorized"
+        }
         end
         className={({ isActive }) =>
           `${navItemClass} ${
@@ -54,7 +88,15 @@ function MenuList() {
         }
       >
         <IoBagCheck className={iconClass} />
-        <p>{isConsumerPath ? 'Orders' : isFarmerPath ? 'Farmer' : isAdminPath ? "Admin" : null}</p>
+        <p>
+          {isConsumerPath
+            ? "Orders"
+            : isFarmerPath
+            ? "Orders"
+            : isAdminPath
+            ? "Admin"
+            : null}
+        </p>
       </NavLink>
     </div>
   );

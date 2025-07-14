@@ -5,7 +5,7 @@ import { useState } from "react";
 import krishakMart_logo from "/krishakMart_Logo.jpg";
 import MenuFooter from "../../components/consumerComponent/ui/MenuFooter";
 import { IoMdHome } from "react-icons/io";
-import { FaShoppingCart, FaUserAlt } from "react-icons/fa";
+import { FaUserAlt } from "react-icons/fa";
 
 function FarmerHomeLayout() {
   const [mobileScreenMenu, setMobileScreenMenu] = useState(false);
@@ -54,18 +54,6 @@ function FarmerHomeLayout() {
                   <p className="">Home</p>
                 </NavLink>
               </div>
-
-              <div className="w-full text-xl font-bold flex space-x-4  px-2 py-2">
-                <NavLink
-                  onClick={toggleMobileMenu}
-                  to={"/farmer/product"}
-                  className={` text-amber-950
-            flex flex-wrap w-full space-x-4 hover:text-green-700 `}
-                >
-                  <FaShoppingCart className="text-3xl " />
-                  <p className="">Farmer</p>
-                </NavLink>
-              </div>
               <div className="w-full text-xl font-bold flex space-x-4  px-2 py-2">
                 <NavLink
                   onClick={toggleMobileMenu}
@@ -75,7 +63,7 @@ function FarmerHomeLayout() {
               `}
                 >
                   <IoBagCheck className="text-3xl " />
-                  <p className="">Farmer</p>
+                  <p className="">Order</p>
                 </NavLink>
               </div>
             </div>

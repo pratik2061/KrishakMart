@@ -35,7 +35,7 @@ function ProductCard({ product }: { product: Product }) {
     <motion.div
       whileHover={{ scale: 1.02, y: -5 }}
       whileTap={{ scale: 0.98 }}
-      className="w-full max-w-[260px] sm:max-w-[280px] lg:max-w-[320px] bg-white border border-gray-100 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 ease-out mx-2 my-4 md:mx-4 md:my-6 overflow-hidden group"
+      className="w-full max-w-[260px] sm:max-w-[280px] lg:max-w-[320px] bg-white border border-gray-100 rounded-3xl shadow-md hover:shadow-xl transition-all duration-500 ease-out mx-2 my-4 md:mx-4 md:my-6 overflow-hidden group"
     >
       {/* Image Section */}
       <div className="relative w-full aspect-[4/3] overflow-hidden">
@@ -46,8 +46,8 @@ function ProductCard({ product }: { product: Product }) {
           loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm text-gray-700 text-xs px-3 py-1.5 rounded-full shadow-lg font-medium border border-white/20">
-          <FaLeaf className="inline mr-1.5 text-green-500" size={12} />
+        <div className="absolute bottom-3 right-3 bg-white text-gray-700 text-xs px-3 py-1.5 rounded-full shadow font-medium border border-gray-200 flex items-center gap-1">
+          <FaLeaf className="text-green-500" size={12} />
           {product.productCategory}
         </div>
       </div>
@@ -67,8 +67,8 @@ function ProductCard({ product }: { product: Product }) {
           <p className="text-xs text-gray-400 font-semibold tracking-wider uppercase mb-1">
             Price
           </p>
-          <p className="text-gray-900 font-bold text-xl sm:text-2xl">
-            <span className="text-emerald-600">Rs. {product.productPrice}</span>
+          <p className="text-indigo-800 font-bold text-xl sm:text-2xl">
+            Rs. {product.productPrice}
             <span className="text-sm text-gray-500 font-medium ml-1">/kg</span>
           </p>
         </div>
@@ -76,29 +76,29 @@ function ProductCard({ product }: { product: Product }) {
         {/* Add to Cart Button */}
         <motion.button
           whileTap={{ scale: 0.95 }}
-          whileHover={{ scale: 1.02 }}
+          whileHover={{ scale: 1.03 }}
           onClick={addCartProduct}
-          className="group/button relative mt-4 flex items-center justify-center gap-3 w-full py-3.5 px-6 rounded-2xl 
-                     bg-gradient-to-b from-emerald-600 to-emerald-700 
-                     hover:from-emerald-700 hover:to-emerald-800 
+          className="group/button hover:cursor-pointer relative mt-4 flex items-center justify-center gap-3 w-full py-3.5 px-6 rounded-2xl 
+                     bg-gradient-to-r from-emerald-500 to-emerald-600 
+                     hover:from-emerald-600 hover:to-emerald-700 
                      text-white font-bold text-sm sm:text-base 
-                     shadow-lg hover:shadow-2xl hover:shadow-emerald-500/25
+                     shadow-lg hover:shadow-xl hover:shadow-emerald-400/30
                      transition-all duration-300 ease-in-out 
-                     border border-emerald-500/20 hover:border-emerald-400/30
+                     border border-emerald-400/30 hover:border-emerald-500/50
                      overflow-hidden"
         >
-          {/* Subtle glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/20 to-transparent opacity-0 group-hover/button:opacity-100 transition-opacity duration-300" />
-          
+          {/* Glow background */}
+          <div className="absolute inset-0 bg-white/10 opacity-0 group-hover/button:opacity-100 transition-opacity duration-300 rounded-2xl" />
+
           {/* Button content */}
-          <div className="relative z-10 flex items-center gap-3">
+          <div className="relative z-10 flex items-center gap-2">
             <FaShoppingCart
               className="text-white group-hover/button:animate-bounce transition-transform duration-300"
               size={18}
             />
-            <span className="font-bold tracking-wide">Add to Cart</span>
+            <span className="tracking-wide">Add to Cart</span>
           </div>
-          
+
           {/* Shine effect */}
           <div className="absolute inset-0 -top-2 -left-2 w-4 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 group-hover/button:animate-shine" />
         </motion.button>
