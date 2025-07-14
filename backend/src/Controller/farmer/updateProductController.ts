@@ -9,7 +9,7 @@ export const updateProductController = async (req: Request, res: Response) => {
     const productId = req.params.id;
     const { productPrice, productQuantity } = req.body;
 
-    const findProduct = await prisma.product.findUnique({
+    const findProduct = await prisma.product.findFirst({
       where: {
         id: parseInt(productId),
         userId: userData.id,
@@ -22,22 +22,20 @@ export const updateProductController = async (req: Request, res: Response) => {
           "Product not found or you are not authorized to update this product",
       });
     } else {
-      await prisma.product.update({
+      const newUpdatedValue = await prisma.product.updateMany({
         where: {
           id: parseInt(productId),
           userId: userData.id,
         },
         data: {
-          productPrice: productPrice
-            ? parseInt(productPrice)
-            : findProduct.productPrice,
-          productQuantity: productQuantity
-            ? parseInt(productQuantity)
-            : findProduct.productQuantity,
+          productPrice: productPrice,
+          productQuantity: productQuantity,
         },
       });
+
       res.status(STATUS_CODE.OK).json({
         message: "Product updated successfully",
+        data: newUpdatedValue
       });
     }
   } catch (error) {
