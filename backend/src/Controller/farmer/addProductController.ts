@@ -59,7 +59,7 @@ export const addProductController = async (req: Request, res: Response) => {
                 productName,
                 productDescription,
                 productImage: result.secure_url,
-                productPrice: parseFloat(productPrice),
+                productPrice: parseInt(productPrice),
                 productQuantity: parseInt(productQuantity),
                 productCategory,
               },
