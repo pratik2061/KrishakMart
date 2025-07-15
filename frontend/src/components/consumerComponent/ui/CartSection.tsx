@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import NoProductInCart from "../../NoProductInCart";
 import { updateCartProductQuantity } from "../../../api/consumer/consumerHome/updateCart";
 import { motion } from "framer-motion";
+import { initiatePayment } from "../../../api/consumer/consumerPayment/initiatePayment";
 
 export interface cartProduct {
   id: number;
@@ -26,6 +27,15 @@ export interface fetchCartProductResponse {
   data: {
     cartItem: cartProduct[];
     message: string;
+  };
+}
+
+export interface khaltiSuccessType {
+  data: {
+    pidx: string;
+    payment_url: string;
+    expires_at: string;
+    expires_in: number;
   };
 }
 
@@ -73,6 +83,23 @@ function CartSection() {
         return item;
       })
     );
+  };
+
+  const initiateKhaltiPayment = async (totalAmount: number) => {
+    const products = cartItem.map((item) => ({
+      identity: String(item.product.id),
+      name: item.product.productName,
+      quantity: item.quantity,
+      unit_price: Math.round(item.product.productPrice * 100), // in paisa
+      total_price: Math.round(item.product.productPrice * item.quantity * 100), // in paisa
+    }));
+    const res = (await initiatePayment(
+      totalAmount,
+      products
+    )) as khaltiSuccessType;
+
+    const { payment_url } = res.data;
+    window.location.href = payment_url;
   };
 
   useEffect(() => {
@@ -211,7 +238,10 @@ function CartSection() {
                 Rs. {totalPrice}
               </span>
             </div>
-            <button className="w-full hover:cursor-pointer mt-6 bg-gradient-to-b from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold py-4 rounded-xl transition-all flex items-center justify-center gap-3 text-lg shadow-lg hover:shadow-xl">
+            <button
+              onClick={() => initiateKhaltiPayment(totalPrice)}
+              className="w-full hover:cursor-pointer mt-6 bg-gradient-to-b from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold py-4 rounded-xl transition-all flex items-center justify-center gap-3 text-lg shadow-lg hover:shadow-xl"
+            >
               Continue to Payment
               <svg
                 xmlns="http://www.w3.org/2000/svg"

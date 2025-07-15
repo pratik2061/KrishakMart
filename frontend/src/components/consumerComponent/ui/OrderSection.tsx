@@ -13,9 +13,9 @@ function OrderSection() {
     fetchOrderData();
   }, []);
   return order.length == 0 ?
-  // (
-  //   <NoOrder />
-  // ) :
+  (
+    <NoOrder />
+  ) :
   (
     <section className="py-24 relative">
       <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
@@ -92,7 +92,7 @@ function OrderSection() {
         </div>
       </div>
     </section>
-  ):"";
+  );
 }
 
 export default OrderSection;

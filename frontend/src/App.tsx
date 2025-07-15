@@ -21,6 +21,7 @@ import FarmerHomeLayout from "./pages/farmer/FarmerHomeLayout";
 import AddProductForm from "./components/farmerComponent/ui/FarmerAddProduct";
 import EditProductForm from "./components/farmerComponent/ui/FarmerEditProduct";
 import FarmerOrderSection from "./pages/farmer/FarmerOrderSection";
+import KhaltiResponse from "./components/VerifyingPaymentResponse";
 
 function App() {
   const router = createBrowserRouter(
@@ -51,6 +52,7 @@ function App() {
             <Route index element={<ConsumerHome />} />
             <Route path="cart" element={<ConsumerCartSection />} />
             <Route path="order" element={<ConsumerOrderSection />} />
+            <Route path="khalti-response" element={<KhaltiResponse />} />
           </Route>
         </Route>
       </>
