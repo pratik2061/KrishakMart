@@ -11,19 +11,22 @@ export const showOrderController = async (req: Request, res: Response) => {
         userId: userData.id,
       },
       include: {
-        orderItems: true,
+        orderItems: {
+          include: {
+            product: true,
+          },
+        },
       },
     });
-    if (order.length === 0 ) {
-        res.status(STATUS_CODE.NOT_FOUND).json({
-            message: "No orders found for this user.",
-        });
-        
+    if (order.length === 0) {
+      res.status(STATUS_CODE.NOT_FOUND).json({
+        message: "No orders found for this user.",
+      });
     } else {
-        res.status(STATUS_CODE.OK).json({
-            message: "Orders fetched successfully",
-            data: order,
-        })
+      res.status(STATUS_CODE.OK).json({
+        message: "Orders fetched successfully",
+        data: order,
+      });
     }
   } catch (error) {
     res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({
