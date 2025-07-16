@@ -73,7 +73,7 @@ function MenuFooter() {
               ? '/login'
               : "/unauthorized"
           }
-          className={`flex space-x-4 hover:cursor-pointer hover:text-red-700  text-amber-950
+          className={`flex space-x-4 hover:cursor-pointer hover:text-red-700  text-red-600
             }`}
         >
           <IoLogOut className="text-2xl" />

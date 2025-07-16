@@ -1,95 +1,166 @@
 import { useEffect, useState } from "react";
 import { fetchOrder } from "../../../api/consumer/consumerHome/fetchOrder";
 import NoOrder from "../../NoOrder";
+import { motion } from "framer-motion";
+
+export interface OrderResponse {
+  data: {
+    message: string;
+    data: Order[];
+  };
+}
+
+export interface Order {
+  id: number;
+  userId: number;
+  totalPrice: number;
+  orderStatus: "PENDING" | "PROCESSING" | "COMPLETED" | "CANCELLED" | "DELIVERED";
+  createdAt: string;
+  updatedAt: string;
+  orderItems: OrderItem[];
+}
+
+export interface OrderItem {
+  id: number;
+  orderId: number;
+  productId: number;
+  quantity: number;
+  price: number;
+  product: Product;
+}
+
+export interface Product {
+  id: number;
+  userId: number;
+  productName: string;
+  productDescription: string;
+  productCategory: string;
+  productImage: string;
+  productPrice: number;
+  productQuantity: number;
+  createdAt: string;
+  updatedAt: string;
+}
 
 function OrderSection() {
-  const [order] = useState([]);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   const fetchOrderData = async () => {
-    const res = await fetchOrder();
-    console.log(res);
+    try {
+      const res = (await fetchOrder()) as OrderResponse;
+      const sorted = res.data.data.sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      setOrders(sorted);
+    } catch (error) {
+      console.error("Failed to fetch orders:", error);
+    }
   };
+
   useEffect(() => {
     fetchOrderData();
   }, []);
-  return order.length == 0 ?
-  (
-    <NoOrder />
-  ) :
-  (
-    <section className="py-24 relative">
-      <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
-        <div className="flex items-start flex-col gap-6 xl:flex-row ">
-          <div className="w-full max-w-sm md:max-w-3xl max-xl:mx-auto">
-            <div className="grid grid-cols-1 gap-6">
-              <div className="rounded-3xl p-6 bg-gray-200 border border-gray-100 flex flex-col  md:flex-row md:items-center gap-5 transition-all duration-500 hover:border-gray-400">
-                <div className="img-box ">
-                  <img
-                    src="https://pagedone.io/asset/uploads/1701167635.png"
-                    alt="Denim Jacket image"
-                    className="w-full md:max-w-[122px] rounded-lg object-cover"
-                  />
+
+  if (orders.length === 0) return <NoOrder />;
+
+  const groupedOrders = {
+    PENDING: orders.filter((o) => o.orderStatus === "PENDING"),
+    DELIVERED: orders.filter((o) => o.orderStatus === "DELIVERED"),
+    OTHERS: orders.filter(
+      (o) => o.orderStatus !== "PENDING" && o.orderStatus !== "DELIVERED"
+    ),
+  };
+
+  const renderOrders = (group: Order[], title: string) => (
+    <>
+      {group.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-12"
+        >
+          <h2 className="text-3xl font-semibold text-gray-700 mb-6">{title}</h2>
+          <div className="flex flex-col gap-10">
+            {group.map((order, i) => (
+              <motion.div
+                key={order.id}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="bg-white shadow-xl rounded-3xl p-8 border border-gray-200"
+              >
+                {/* Order Header */}
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-xl font-bold text-gray-800">Order #{order.id}</h3>
+                  <span
+                    className={`text-sm px-4 py-1 rounded-full font-medium uppercase tracking-wide border 
+                    ${
+                      order.orderStatus === "DELIVERED"
+                        ? "bg-green-100 text-green-700 border-green-300"
+                        : order.orderStatus === "PENDING"
+                        ? "bg-yellow-100 text-yellow-700 border-yellow-300"
+                        : "bg-gray-100 text-gray-600 border-gray-300"
+                    }`}
+                  >
+                    {order.orderStatus}
+                  </span>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-3 md:gap-8">
-                  <div className="">
-                    <h2 className="font-medium text-xl leading-8 text-black mb-3">
-                      Dark Denim Jacket
-                    </h2>
-                    <p className="font-normal text-lg leading-8 text-gray-500 ">
-                      By: Dust Studios
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between gap-8">
-                    <h6 className="font-medium text-xl leading-8 text-indigo-600">
-                      $120.00
-                    </h6>
-                  </div>
+
+                {/* Products */}
+                <div className="grid gap-6 mb-8">
+                  {order.orderItems.map((item) => (
+                    <motion.div
+                      key={item.id}
+                      whileHover={{ scale: 1.02 }}
+                      className="flex flex-col md:flex-row items-start md:items-center bg-gray-100 rounded-2xl p-4 md:p-6 transition"
+                    >
+                      <img
+                        src={item.product.productImage}
+                        alt={item.product.productName}
+                        className="w-28 h-28 object-cover rounded-xl border border-gray-300"
+                      />
+                      <div className="flex flex-col md:flex-row md:justify-between w-full md:items-center md:ml-6 mt-4 md:mt-0">
+                        <div>
+                          <h3 className="text-lg font-medium text-gray-800">
+                            {item.product.productName}
+                          </h3>
+                          <p className="text-sm text-gray-500">
+                            {item.product.productCategory}
+                          </p>
+                        </div>
+                        <div className="flex flex-col md:items-end mt-4 md:mt-0">
+                          <p className="text-indigo-600 font-semibold text-lg">
+                            Rs {item.price}
+                          </p>
+                          <p className="text-gray-500 text-sm">
+                            Qty: {item.quantity}
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
-              </div>
-            </div>
+
+                {/* Summary */}
+                <div className="border-t pt-6 flex justify-between text-lg font-medium text-gray-800">
+                  <p>Total:</p>
+                  <p className="text-indigo-600">Rs {order.totalPrice}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
-          <div className="w-full max-w-sm md:max-w-3xl xl:max-w-sm flex items-start flex-col gap-8 max-xl:mx-auto ">
-            <div className="p-6 border border-gray-200 rounded-3xl w-full group transition-all duration-500 hover:border-gray-400 ">
-              <h2 className="font-manrope font-bold text-3xl leading-10 text-black pb-6 border-b border-gray-200 ">
-                Order Summary
-              </h2>
-              <div className="data py-6 border-b border-gray-200">
-                <div className="flex items-center justify-between gap-4 mb-5">
-                  <p className="font-normal text-lg leading-8 text-gray-400 transition-all duration-500 group-hover:text-gray-700">
-                    Product Cost
-                  </p>
-                  <p className="font-medium text-lg leading-8 text-gray-900">
-                    $360.00
-                  </p>
-                </div>
-                <div className="flex items-center justify-between gap-4 mb-5">
-                  <p className="font-normal text-lg leading-8 text-gray-400 transition-all duration-500 group-hover:text-gray-700">
-                    Shipping
-                  </p>
-                  <p className="font-medium text-lg leading-8 text-gray-600">
-                    $40.00
-                  </p>
-                </div>
-                <div className="flex items-center justify-between gap-4 ">
-                  <p className="font-normal text-lg leading-8 text-gray-400 transition-all duration-500 group-hover:text-gray-700 ">
-                    Order Status
-                  </p>
-                  <p className="font-medium text-lg leading-8 text-emerald-500">
-                    #PENDING
-                  </p>
-                </div>
-              </div>
-              <div className="total flex items-center justify-between pt-6">
-                <p className="font-normal text-xl leading-8 text-black ">
-                  Total
-                </p>
-                <h5 className="font-manrope font-bold text-2xl leading-9 text-indigo-600">
-                  $400.00
-                </h5>
-              </div>
-            </div>
-          </div>
-        </div>
+        </motion.div>
+      )}
+    </>
+  );
+
+  return (
+    <section className="py-20 bg-gray-50 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        {renderOrders(groupedOrders.PENDING, "🟡 Pending Orders")}
+        {renderOrders(groupedOrders.DELIVERED, "✅ Delivered Orders")}
+        {renderOrders(groupedOrders.OTHERS, "📦 Other Orders")}
       </div>
     </section>
   );

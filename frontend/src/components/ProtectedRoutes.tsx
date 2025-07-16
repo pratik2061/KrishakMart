@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { verifyToken } from "../auth/slice/authThunk"; // adjust path as needed
+import { verifyToken } from "../auth/slice/authThunk";
 import { toast } from "react-toastify";
+import Footer from "../components/Footer"; // adjust path as needed
 
 interface dataTypes {
   id: number;
@@ -56,5 +57,15 @@ export const ProtectedRoutes = ({
   if (user.role !== allowableRoles)
     return <Navigate to="/unauthorized" replace />;
 
-  return <Outlet />;
+  return (
+    <div className="flex flex-col min-h-screen">
+      {/* Main route content area */}
+      <main className="flex-grow">
+        <Outlet />
+      </main>
+
+      {/* Persistent footer */}
+      <Footer />
+    </div>
+  );
 };

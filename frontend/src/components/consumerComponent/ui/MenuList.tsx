@@ -1,8 +1,7 @@
 import { IoMdHome } from "react-icons/io";
 import { FaShoppingCart } from "react-icons/fa";
 import { IoBagCheck } from "react-icons/io5";
-import { NavLink } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 function MenuList() {
   const location = useLocation();
@@ -12,12 +11,13 @@ function MenuList() {
   const isAdminPath = path === "/admin" || path.startsWith("/admin/");
 
   const navItemClass =
-    "flex items-center w-full gap-4 px-4 py-3 text-lg font-medium rounded-xl transition-all duration-200";
+    "flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2 sm:py-3 text-base sm:text-lg font-medium rounded-xl transition-all duration-200";
 
-  const iconClass = "text-2xl";
+  const iconClass = "text-xl sm:text-2xl";
 
   return (
-    <div className="w-full h-full space-y-4 py-6 px-2">
+    <div className="w-full space-y-3 sm:space-y-4 py-4 sm:py-6 px-2 sm:px-3">
+      {/* Home Link */}
       <NavLink
         to={
           isConsumerPath
@@ -36,40 +36,26 @@ function MenuList() {
         }
       >
         <IoMdHome className={iconClass} />
-        <p>Home</p>
+        <span className="truncate">Home</span>
       </NavLink>
 
-      {isConsumerPath ? (
+      {/* Cart (Only for Consumer) */}
+      {isConsumerPath && (
         <NavLink
-          to={
-            isConsumerPath
-              ? "/consumer/cart"
-              : isFarmerPath
-              ? "/farmer/product"
-              : isAdminPath
-              ? "/admin"
-              : "/unauthorized"
-          }
+          to="/consumer/cart"
           end
           className={({ isActive }) =>
             `${navItemClass} ${
               isActive ? "bg-green-100 text-green-800" : "text-amber-950"
-            } hover:bg-yellow-50 hover:text-  green-700`
+            } hover:bg-yellow-50 hover:text-green-700`
           }
         >
-          {isConsumerPath ? <FaShoppingCart className={iconClass} /> : null}
-          <p>
-            {isConsumerPath
-              ? "Cart"
-              : isFarmerPath
-              ? null
-              : isAdminPath
-              ? "Admin"
-              : null}
-          </p>
+          <FaShoppingCart className={iconClass} />
+          <span className="truncate">Cart</span>
         </NavLink>
-      ) : null}
+      )}
 
+      {/* Orders */}
       <NavLink
         to={
           isConsumerPath
@@ -88,15 +74,9 @@ function MenuList() {
         }
       >
         <IoBagCheck className={iconClass} />
-        <p>
-          {isConsumerPath
-            ? "Orders"
-            : isFarmerPath
-            ? "Orders"
-            : isAdminPath
-            ? "Admin"
-            : null}
-        </p>
+        <span className="truncate">
+          {isConsumerPath || isFarmerPath ? "Orders" : isAdminPath ? "Admin" : ""}
+        </span>
       </NavLink>
     </div>
   );

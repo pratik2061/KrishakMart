@@ -24,7 +24,7 @@ function KhaltiResponse() {
     const pidx = urlParams.get("pidx");
 
     if (!pidx) {
-      toast.error("❌ Missing payment identifier.", {
+      toast.error("Missing payment identifier.", {
         theme: "dark",
         autoClose: 3000,
       });
@@ -34,16 +34,16 @@ function KhaltiResponse() {
 
     const verifyPayment = async () => {
       try {
-        const res = await verifyKhaltiPayment(pidx) ;
+        const res = await verifyKhaltiPayment(pidx);
 
         if (res.status === 201 && res.data) {
-          toast.success("✅ Payment successful and order created!", {
+          toast.success(" Payment successful and order created!", {
             theme: "dark",
             autoClose: 3000,
           });
           navigate("/consumer/order");
         } else {
-          toast.error("❌ Unexpected response from server.", {
+          toast.error(" Unexpected response from server.", {
             theme: "dark",
             autoClose: 3000,
           });

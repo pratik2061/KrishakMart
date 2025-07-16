@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { verifyToken } from "../auth/slice/farmerAuthThunk"; // adjust path as needed
+import { verifyToken } from "../auth/slice/farmerAuthThunk";
 import { toast } from "react-toastify";
+import Footer from "../components/Footer"; // ✅ Make sure this path is correct
 
 interface dataTypes {
   id: number;
@@ -49,12 +50,22 @@ export const FarmerProtectedRoutes = ({
     checkSession();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 
   if (!farmer) return <Navigate to="/farmer/login" replace />;
 
   if (farmer.role !== allowableRoles)
     return <Navigate to="/unauthorized" replace />;
 
-  return <Outlet />;
+  return (
+    <div className="flex flex-col min-h-screen">
+      {/* Main route content area */}
+      <main className="flex-grow">
+        <Outlet />
+      </main>
+
+      {/* Persistent footer */}
+      <Footer />
+    </div>
+  );
 };
