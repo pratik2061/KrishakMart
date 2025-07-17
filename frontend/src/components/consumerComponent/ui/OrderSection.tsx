@@ -42,8 +42,18 @@ export interface Product {
   updatedAt: string;
 }
 
+const tabs = [
+  { key: "PENDING", label: "🟡 Pending" },
+  { key: "PROCESSING", label: "🔄 Processing" },
+  { key: "DELIVERED", label: "✅ Delivered" },
+  { key: "CANCELLED", label: "❌ Cancelled" },
+] as const;
+
+type TabKey = (typeof tabs)[number]["key"];
+
 function OrderSection() {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [activeTab, setActiveTab] = useState<TabKey>("PENDING");
 
   const fetchOrderData = async () => {
     try {
@@ -63,26 +73,41 @@ function OrderSection() {
 
   if (orders.length === 0) return <NoOrder />;
 
-  const groupedOrders = {
-    PENDING: orders.filter((o) => o.orderStatus === "PENDING"),
-    DELIVERED: orders.filter((o) => o.orderStatus === "DELIVERED"),
-    OTHERS: orders.filter(
-      (o) => o.orderStatus !== "PENDING" && o.orderStatus !== "DELIVERED"
-    ),
-  };
+  const filteredOrders = orders.filter((order) => order.orderStatus === activeTab);
 
-  const renderOrders = (group: Order[], title: string) => (
-    <>
-      {group.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-12"
-        >
-          <h2 className="text-3xl font-semibold text-gray-700 mb-6">{title}</h2>
+  return (
+    <section className="py-16 bg-gray-50 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        {/* Tabs */}
+        <div className="flex gap-4 mb-10 flex-wrap">
+          {tabs.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all border 
+                ${
+                  activeTab === tab.key
+                    ? "bg-indigo-600 text-white border-indigo-700"
+                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+                }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Orders */}
+        {filteredOrders.length === 0 ? (
+          <motion.div
+            className="text-center text-gray-500"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            No orders found for this status.
+          </motion.div>
+        ) : (
           <div className="flex flex-col gap-10">
-            {group.map((order, i) => (
+            {filteredOrders.map((order, i) => (
               <motion.div
                 key={order.id}
                 initial={{ opacity: 0, y: 50 }}
@@ -95,13 +120,17 @@ function OrderSection() {
                   <h3 className="text-xl font-bold text-gray-800">Order #{order.id}</h3>
                   <span
                     className={`text-sm px-4 py-1 rounded-full font-medium uppercase tracking-wide border 
-                    ${
-                      order.orderStatus === "DELIVERED"
-                        ? "bg-green-100 text-green-700 border-green-300"
-                        : order.orderStatus === "PENDING"
-                        ? "bg-yellow-100 text-yellow-700 border-yellow-300"
-                        : "bg-gray-100 text-gray-600 border-gray-300"
-                    }`}
+                      ${
+                        order.orderStatus === "DELIVERED"
+                          ? "bg-green-100 text-green-700 border-green-300"
+                          : order.orderStatus === "PENDING"
+                          ? "bg-yellow-100 text-yellow-700 border-yellow-300"
+                          : order.orderStatus === "PROCESSING"
+                          ? "bg-sky-100 text-sky-700 border-sky-300"
+                          : order.orderStatus === "CANCELLED"
+                          ? "bg-rose-100 text-rose-700 border-rose-300"
+                          : "bg-gray-100 text-gray-600 border-gray-300"
+                      }`}
                   >
                     {order.orderStatus}
                   </span>
@@ -150,17 +179,7 @@ function OrderSection() {
               </motion.div>
             ))}
           </div>
-        </motion.div>
-      )}
-    </>
-  );
-
-  return (
-    <section className="py-20 bg-gray-50 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
-        {renderOrders(groupedOrders.PENDING, "🟡 Pending Orders")}
-        {renderOrders(groupedOrders.DELIVERED, "✅ Delivered Orders")}
-        {renderOrders(groupedOrders.OTHERS, "📦 Other Orders")}
+        )}
       </div>
     </section>
   );

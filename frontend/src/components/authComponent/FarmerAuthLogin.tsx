@@ -84,7 +84,7 @@ export default function FarmerLogin() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-green-50">
-      <div className="flex-grow flex items-center justify-center px-4">
+      <div className="flex-grow flex items-center justify-center px-4 my-4">
         <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md border border-zinc-200">
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold text-green-700">Farmer Login 🌾</h1>

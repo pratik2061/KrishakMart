@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { fetchOrder } from "../../../api/farmer/farmerHome/fetchOrder";
+import { useNavigate } from "react-router-dom";
 
 export interface OrderItem {
   consumerEmail: string;
@@ -69,16 +70,27 @@ const statusStyles: Record<
 const tabs = ["PENDING", "PROCESSING", "DELIVERED", "CANCELLED"];
 
 export default function FarmerOrderList() {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState<GroupedOrder[]>([]);
   const [activeTab, setActiveTab] = useState("PENDING");
 
-  const handleUpdateOrder = (orderId: number) => {
-    alert(`Update order status for Order #${orderId}`);
+  const handleUpdateOrder = (
+    orderId: number,
+    status: OrderItem["status"],
+    items: GroupedOrder["items"]
+  ) => {
+    navigate("/farmer/order/update", {
+      state: {
+        orderId,
+        status,
+        products: items, // passing items array
+      },
+    });
   };
 
   const fetchOrderFunction = async () => {
     try {
-      const res = await fetchOrder() as FetchOrderResponse;
+      const res = (await fetchOrder()) as FetchOrderResponse;
       const flatOrders = res.data.orders;
 
       // Group orders by orderId
@@ -175,7 +187,8 @@ export default function FarmerOrderList() {
                   </div>
 
                   <p className="text-sm text-gray-500 mb-5">
-                    Consumer: <span className="font-medium">{order.consumerName}</span>
+                    Consumer:{" "}
+                    <span className="font-medium">{order.consumerName}</span>
                   </p>
 
                   <div className="grid gap-4 sm:gap-5">
@@ -217,7 +230,10 @@ export default function FarmerOrderList() {
                       whileHover={!isDisabled ? { scale: 1.05 } : {}}
                       whileTap={!isDisabled ? { scale: 0.97 } : {}}
                       disabled={isDisabled}
-                      onClick={() => !isDisabled && handleUpdateOrder(order.id)}
+                      onClick={() =>
+                        !isDisabled &&
+                        handleUpdateOrder(order.id, order.status, order.items)
+                      }
                       className={`w-full sm:w-auto px-6 py-2 rounded-xl font-medium transition-all duration-300 shadow-md ${
                         isDisabled
                           ? "bg-gray-300 text-gray-500 cursor-not-allowed"

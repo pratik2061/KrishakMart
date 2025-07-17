@@ -19,6 +19,7 @@ function MenuList() {
     <div className="w-full space-y-3 sm:space-y-4 py-4 sm:py-6 px-2 sm:px-3">
       {/* Home Link */}
       <NavLink
+        end
         to={
           isConsumerPath
             ? "/consumer"
@@ -28,7 +29,6 @@ function MenuList() {
             ? "/admin"
             : "/unauthorized"
         }
-        end
         className={({ isActive }) =>
           `${navItemClass} ${
             isActive ? "bg-green-100 text-green-800" : "text-amber-950"
@@ -57,6 +57,7 @@ function MenuList() {
 
       {/* Orders */}
       <NavLink
+      end
         to={
           isConsumerPath
             ? "/consumer/order"
@@ -66,7 +67,7 @@ function MenuList() {
             ? "/admin"
             : "/unauthorized"
         }
-        end
+       
         className={({ isActive }) =>
           `${navItemClass} ${
             isActive ? "bg-green-100 text-green-800" : "text-amber-950"
@@ -75,7 +76,11 @@ function MenuList() {
       >
         <IoBagCheck className={iconClass} />
         <span className="truncate">
-          {isConsumerPath || isFarmerPath ? "Orders" : isAdminPath ? "Admin" : ""}
+          {isConsumerPath || isFarmerPath
+            ? "Orders"
+            : isAdminPath
+            ? "Admin"
+            : ""}
         </span>
       </NavLink>
     </div>

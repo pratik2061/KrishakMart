@@ -75,6 +75,7 @@ function FarmerHomeLayout() {
           <div className="flex flex-col h-full">
             <nav className="flex-1 px-4 py-6 space-y-2">
               <NavLink
+                end
                 onClick={toggleMobileMenu}
                 to="/farmer"
                 className={({ isActive }) =>
@@ -90,6 +91,7 @@ function FarmerHomeLayout() {
               </NavLink>
 
               <NavLink
+                end
                 onClick={toggleMobileMenu}
                 to="/farmer/order"
                 className={({ isActive }) =>
@@ -105,6 +107,7 @@ function FarmerHomeLayout() {
               </NavLink>
 
               <NavLink
+                end
                 onClick={toggleMobileMenu}
                 to="/farmer/profile"
                 className={({ isActive }) =>

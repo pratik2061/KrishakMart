@@ -90,6 +90,7 @@ function ConsumerHomeLayout() {
                 <span>Home</span>
               </NavLink>
               <NavLink
+                end
                 onClick={toggleMobileMenu}
                 to="/consumer/cart"
                 className={({ isActive }) =>
