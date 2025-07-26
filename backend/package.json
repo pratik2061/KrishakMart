@@ -4,8 +4,11 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon --quiet --watch src --ext ts --exec ts-node src/app.ts",
-    "seed": "ts-node src/Seed/seed.ts"
+    "dev": "node src/app.ts",
+    "seed": "ts-node src/Seed/seed.ts",
+    "build": "pnpm i && pnpm prisma generate",
+    "start": "pnpm prisma migrate deploy && pnpm dev",
+    "clean": "rm -rf dist"
   },
   "keywords": [],
   "author": "pratik sharma",
