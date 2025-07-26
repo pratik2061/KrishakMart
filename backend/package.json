@@ -2,11 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "dist/app.js",
   "scripts": {
-    "dev": "node src/app.ts",
+    "dev": "ts-node src/app.ts",
     "seed": "ts-node src/Seed/seed.ts",
-    "build": "pnpm i && pnpm prisma generate",
+    "build": "pnpm i && pnpm prisma generate && tsc",
     "start": "pnpm prisma migrate deploy && pnpm dev",
     "clean": "rm -rf dist"
   },
