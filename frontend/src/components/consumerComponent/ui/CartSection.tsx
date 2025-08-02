@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import { fetchCartData } from "../../../api/consumer/consumerHome/fetchCartItem";
 import { IoClose } from "react-icons/io5";
@@ -42,6 +43,7 @@ export interface khaltiSuccessType {
 function CartSection() {
   const [cartItem, setCartItem] = useState<cartProduct[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
   const fetchProductData = async () => {
     const res = (await fetchCartData()) as fetchCartProductResponse;
@@ -86,20 +88,26 @@ function CartSection() {
   };
 
   const initiateKhaltiPayment = async (totalAmount: number) => {
-    const products = cartItem.map((item) => ({
-      identity: String(item.product.id),
-      name: item.product.productName,
-      quantity: item.quantity,
-      unit_price: Math.round(item.product.productPrice * 100), // in paisa
-      total_price: Math.round(item.product.productPrice * item.quantity * 100), // in paisa
-    }));
-    const res = (await initiatePayment(
-      totalAmount,
-      products
-    )) as khaltiSuccessType;
+    setIsProcessingPayment(true);
+    try {
+      const products = cartItem.map((item) => ({
+        identity: String(item.product.id),
+        name: item.product.productName,
+        quantity: item.quantity,
+        unit_price: Math.round(item.product.productPrice * 100),
+        total_price: Math.round(item.product.productPrice * item.quantity * 100),
+      }));
 
-    const { payment_url } = res.data;
-    window.location.href = payment_url;
+      const res = (await initiatePayment(totalAmount, products)) as khaltiSuccessType;
+      const { payment_url } = res.data;
+      window.location.href = payment_url;
+    } catch (error) {
+      toast("Failed to initiate payment. Please try again.", {
+        type: "error",
+        theme: "dark",
+      });
+      setIsProcessingPayment(false);
+    }
   };
 
   useEffect(() => {
@@ -120,7 +128,6 @@ function CartSection() {
         <NoProductInCart />
       ) : (
         <div className="w-full max-w-7xl px-4 md:px-6 lg:px-8 mx-auto">
-          {/* Header Row */}
           <div className="hidden lg:grid grid-cols-12 gap-6 py-6 border-b border-gray-300">
             <div className="col-span-6 font-semibold text-xl text-gray-600">
               Product
@@ -133,7 +140,6 @@ function CartSection() {
             </div>
           </div>
 
-          {/* Cart Items */}
           <div className="flex flex-col space-y-6">
             {cartItem.map((item) => (
               <motion.div
@@ -143,7 +149,6 @@ function CartSection() {
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 className="grid grid-cols-1 lg:grid-cols-12 gap-6 my-3 border-b border-gray-300 relative rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow p-4 sm:p-6"
               >
-                {/* Delete Button */}
                 <button
                   onClick={() => deleteCartProductFunction(item.product.id)}
                   className="absolute right-4 hover:cursor-pointer top-4 text-gray-400 hover:text-red-600 transition-colors z-10"
@@ -152,7 +157,6 @@ function CartSection() {
                   <IoClose size={24} />
                 </button>
 
-                {/* Product Info */}
                 <div className="col-span-12 lg:col-span-6 flex items-center gap-4 sm:gap-6">
                   <div className="flex-shrink-0 w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-gray-100 rounded-2xl overflow-hidden shadow-sm border border-gray-200">
                     <img
@@ -175,7 +179,7 @@ function CartSection() {
                       {item.product.productCategory}
                     </p>
                     <p className="text-emerald-600 font-semibold mt-2 text-sm sm:text-base">
-                      Rs. {item.product.productPrice}{" "}
+                      Rs. {item.product.productPrice}
                       <span className="text-xs sm:text-sm text-gray-600">
                         /kg
                       </span>
@@ -183,15 +187,13 @@ function CartSection() {
                   </div>
                 </div>
 
-                {/* Quantity Controls */}
                 <div className="col-span-12 lg:col-span-3 flex items-center justify-center mt-4 lg:mt-0">
                   <div className="flex items-center border border-gray-300 rounded-full overflow-hidden shadow-sm bg-white">
                     <button
                       onClick={() =>
                         handleQuantityChange(item.product.id, "decrement")
                       }
-                      className="px-4 py-2 sm:px-5 sm:py-2 bg-gray-50 hover:bg-gray-100 transition cursor-pointer select-none text-xl sm:text-2xl font-bold text-gray-700 flex items-center justify-center min-w-[40px] sm:min-w-[44px]"
-                      aria-label="Decrease quantity"
+                      className="px-4 py-2 sm:px-5 sm:py-2 bg-gray-50 hover:bg-gray-100 transition cursor-pointer select-none text-xl sm:text-2xl font-bold text-gray-700"
                     >
                       –
                     </button>
@@ -204,20 +206,16 @@ function CartSection() {
                       onClick={() =>
                         handleQuantityChange(item.product.id, "increment")
                       }
-                      className="px-4 py-2 sm:px-5 sm:py-2 bg-gray-50 hover:bg-gray-100 transition cursor-pointer select-none text-xl sm:text-2xl font-bold text-gray-700 flex items-center justify-center min-w-[40px] sm:min-w-[44px]"
-                      aria-label="Increase quantity"
+                      className="px-4 py-2 sm:px-5 sm:py-2 bg-gray-50 hover:bg-gray-100 transition cursor-pointer select-none text-xl sm:text-2xl font-bold text-gray-700"
                     >
                       +
                     </button>
                   </div>
                 </div>
 
-                {/* Price */}
                 <div className="col-span-12 lg:col-span-3 flex flex-col justify-center items-center mt-4 lg:mt-0">
-                  <p className="text-xs sm:text-sm text-gray-500 mb-1">
-                    Subtotal
-                  </p>
-                  <p className="text-emerald-600 font-bold text-xl sm:text-2xl leading-none">
+                  <p className="text-xs sm:text-sm text-gray-500 mb-1">Subtotal</p>
+                  <p className="text-emerald-600 font-bold text-xl sm:text-2xl">
                     Rs. {item.product.productPrice * item.quantity}
                   </p>
                 </div>
@@ -225,7 +223,6 @@ function CartSection() {
             ))}
           </div>
 
-          {/* Total and Checkout */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -240,23 +237,54 @@ function CartSection() {
             </div>
             <button
               onClick={() => initiateKhaltiPayment(totalPrice)}
-              className="w-full hover:cursor-pointer mt-6 bg-gradient-to-b from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold py-4 rounded-xl transition-all flex items-center justify-center gap-3 text-lg shadow-lg hover:shadow-xl"
+              disabled={isProcessingPayment}
+              className={`w-full mt-6 bg-gradient-to-b from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold py-4 rounded-xl transition-all flex items-center justify-center gap-3 text-lg shadow-lg ${
+                isProcessingPayment ? "opacity-60 cursor-not-allowed" : "hover:shadow-xl"
+              }`}
             >
-              Continue to Payment
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="feather feather-arrow-right"
-              >
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
+              {isProcessingPayment ? (
+                <>
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8z"
+                    ></path>
+                  </svg>
+                  Processing...
+                </>
+              ) : (
+                <>
+                  Continue to Payment
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="feather feather-arrow-right"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </>
+              )}
             </button>
           </motion.div>
         </div>
