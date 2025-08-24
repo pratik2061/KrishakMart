@@ -1,97 +1,84 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { RxEyeOpen } from "react-icons/rx";
 import { ClipLoader } from "react-spinners";
-import { loginFarmer, verifyToken } from "../../auth/slice/farmerAuthThunk";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch } from "../../auth/store/authStore";
 import { toast } from "react-toastify";
-import Footer from "../../components/Footer"; // adjust path as needed
+import Footer from "../../components/Footer"; // adjust path if needed
 
-interface state {
-  farmerAuth: {
-    farmerData: {
-      id: number;
-      email: string;
-      role: string;
-    } | null;
-    status: string;
-    error: string | null;
-  };
-}
-
-export default function FarmerLogin() {
-  const status = useSelector((state: state) => state.farmerAuth.status);
-  const dispatch = useDispatch<AppDispatch>();
+export default function FarmerSignup() {
   const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await dispatch(loginFarmer({ email, password }));
 
-    if (loginFarmer.fulfilled.match(result)) {
-      const farmerRole = result.payload.role;
-
-      switch (farmerRole) {
-        case "FARMER":
-          navigate("/farmer");
-          break;
-        default:
-          navigate("/unauthorized");
-      }
-    } else if (loginFarmer.rejected.match(result)) {
-      const errorMsg = (result.payload as string) || "login failed";
-      toast(errorMsg, {
+    if (password !== confirmPassword) {
+      toast("Passwords do not match!", {
         theme: "dark",
         autoClose: 3000,
         type: "error",
       });
+      return;
     }
-  };
 
-  useEffect(() => {
-    const checkToken = async () => {
-      try {
-        const res = await verifyToken();
-        const storedFarmer = JSON.parse(localStorage.getItem("farmer_data") || "null");
+    try {
+      setLoading(true);
+      const res = await axios.post("http://localhost:5000/api/farmer/signup", {
+        name,
+        email,
+        password,
+      });
 
-        if (
-          storedFarmer &&
-          res?.id === storedFarmer.id &&
-          res?.email === storedFarmer.email &&
-          res?.role === storedFarmer.role
-        ) {
-          switch (res.role) {
-            case "FARMER":
-              navigate("/farmer");
-              break;
-            default:
-              navigate("/unauthorized");
-          }
-        }
-      } catch {
-        localStorage.removeItem("farmer_data");
+      if (res.status === 201) {
+        toast("Signup successful! Please login.", {
+          theme: "dark",
+          autoClose: 3000,
+          type: "success",
+        });
         navigate("/farmer/login");
       }
-    };
-
-    checkToken();
-  }, [navigate]);
+    } catch (error: any) {
+      toast(error.response?.data?.message || "Signup failed", {
+        theme: "dark",
+        autoClose: 3000,
+        type: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-green-50">
       <div className="flex-grow flex items-center justify-center px-4 my-4">
         <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md border border-zinc-200">
           <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold text-green-700">Farmer Login 🌾</h1>
-            <p className="text-gray-500 mt-2">Log in to manage your farm products</p>
+            <h1 className="text-3xl font-bold text-green-700">Farmer Signup 🌱</h1>
+            <p className="text-gray-500 mt-2">Create your account to join KrishakMart</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Full Name</label>
+              <input
+                required
+                type="text"
+                className="mt-1 w-full px-4 py-2 border border-zinc-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
+                placeholder="John Farmer"
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700">Email</label>
               <input
@@ -123,29 +110,39 @@ export default function FarmerLogin() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-sm text-gray-600">
-              <label className="flex items-center">
-                <input type="checkbox" className="mr-1" />
-                Remember me
-              </label>
-              <a href="#" className="text-green-600 hover:underline">
-                Forgot password?
-              </a>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
+              <div className="relative">
+                <input
+                  required
+                  type={showConfirm ? "text" : "password"}
+                  className="mt-1 w-full px-4 py-2 border border-zinc-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
+                  placeholder="••••••••"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm(!showConfirm)}
+                  className="absolute inset-y-0 right-3 top-2 flex items-center text-sm text-gray-600"
+                >
+                  {showConfirm ? <RxEyeOpen /> : <RiEyeCloseLine />}
+                </button>
+              </div>
             </div>
 
             <button
-              disabled={status === "loading"}
+              disabled={loading}
               type="submit"
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl transition duration-300"
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl transition duration-300 flex items-center justify-center"
             >
-              {status === "loading" ? <ClipLoader color="white" size={20} /> : "Log In"}
+              {loading ? <ClipLoader color="white" size={20} /> : "Sign Up"}
             </button>
           </form>
 
           <p className="text-center text-sm text-gray-600 mt-6">
-            New to KrishakMart?{" "}
-            <a href="/signup" className="text-green-600 hover:underline">
-              Register as Farmer
+            Already have an account?{" "}
+            <a href="/farmer/login" className="text-green-600 hover:underline">
+              Log in
             </a>
           </p>
         </div>

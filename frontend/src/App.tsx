@@ -23,6 +23,7 @@ import EditProductForm from "./components/farmerComponent/ui/FarmerEditProduct";
 import FarmerOrderSection from "./pages/farmer/FarmerOrderSection";
 import KhaltiResponse from "./components/VerifyingPaymentResponse";
 import UpdateOrderComponent from "./components/farmerComponent/ui/FarmerUpdateProduct";
+import FarmerSignup from "./components/authComponent/FarmerAuthSignUp";
 
 function App() {
   const router = createBrowserRouter(
@@ -30,6 +31,7 @@ function App() {
       <>
         <Route path="/login" element={<Login />} />
         <Route path="/farmer/login" element={<FarmerLogin />} />
+        <Route path="/farmer/signup" element={<FarmerSignup />} />
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
         <Route path="*" element={<NotFoundPage />} />
 
@@ -45,7 +47,7 @@ function App() {
             <Route path="product/add" element={<AddProductForm />} />
             <Route path="product/edit" element={<EditProductForm />} />
             <Route path="order" element={<FarmerOrderSection />} />
-            <Route path = "order/update" element={<UpdateOrderComponent/>}/>
+            <Route path="order/update" element={<UpdateOrderComponent />} />
           </Route>
         </Route>
 
