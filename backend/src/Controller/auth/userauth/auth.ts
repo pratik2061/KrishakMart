@@ -5,11 +5,12 @@ import { STATUS_CODE } from "../../../Constants";
 import { createToken } from "../../../utils/createToken";
 import { userAuthSchema } from "../../../zod/userAuthSchema";
 import { loginPayload } from "../../../types/Payload";
+import Stream from "stream";
+import cloudinary from "../../../utils/cloudinary";
 
-//consumer registeration
-
+//consumer registration
 export const userRegister = async (req: Request, res: Response) => {
-  const { name, email, password, address, contact, image } = req.body;
+  const { name, email, password, address, contact } = req.body;
 
   const parsedInput = userAuthSchema.safeParse(req.body);
 
@@ -18,6 +19,10 @@ export const userRegister = async (req: Request, res: Response) => {
       message: "zod validation failed",
       error: parsedInput.error,
     });
+  } else if (!req.file) {
+    res.status(STATUS_CODE.BAD_REQUEST).json({
+      message: "Image file is required",
+    });
   } else {
     try {
       const existingUser = await prisma.user.findUnique({
@@ -25,26 +30,49 @@ export const userRegister = async (req: Request, res: Response) => {
           email: email,
         },
       });
+
       if (existingUser) {
         res.status(STATUS_CODE.BAD_REQUEST).json({
-          message: "User with the email or contact already exits",
-        });
-      } else {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        await prisma.user.create({
-          data: {
-            name: name,
-            email: email,
-            password: hashedPassword,
-            address: address,
-            contact: contact,
-            image: image,
-          },
-        });
-        res.status(STATUS_CODE.ACCEPTED).json({
-          message: "user created successfully.",
+          message: "User with the email or contact already exists",
         });
       }
+
+      const bufferStream = new Stream.PassThrough();
+      bufferStream.end(req.file.buffer);
+
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { folder: "users" },
+        async (error, result) => {
+          if (error) {
+            res.status(500).json({
+              error: "Cloudinary upload failed",
+              detail: error,
+            });
+          } else if (!result?.secure_url) {
+            res.status(500).json({ error: "Upload failed" });
+          }
+          if (result) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            await prisma.user.create({
+              data: {
+                name,
+                email,
+                password: hashedPassword,
+                address,
+                contact,
+                image: result.secure_url, // store cloudinary image url
+              },
+            });
+          }
+
+          res.status(STATUS_CODE.ACCEPTED).json({
+            message: "User created successfully.",
+          });
+        }
+      );
+
+      bufferStream.pipe(uploadStream);
     } catch (error) {
       res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({
         message: "Error while creating user",

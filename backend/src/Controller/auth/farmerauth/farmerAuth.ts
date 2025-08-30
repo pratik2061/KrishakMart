@@ -5,6 +5,8 @@ import prisma from "../../../Db/db.config";
 import bcrypt from "bcryptjs";
 import { loginPayload } from "../../../types/Payload";
 import { createToken } from "../../../utils/createToken";
+import Stream from "stream";
+import cloudinary from "../../../utils/cloudinary";
 
 //Farmer register
 export const farmerRegister = async (req: Request, res: Response) => {
@@ -14,7 +16,6 @@ export const farmerRegister = async (req: Request, res: Response) => {
     password,
     address,
     contact,
-    image,
     role,
     farmName,
     farmAddress,
@@ -27,6 +28,10 @@ export const farmerRegister = async (req: Request, res: Response) => {
       message: "zod validation failed",
       error: parsedInput.error,
     });
+  } else if (!req.file) {
+    res.status(STATUS_CODE.BAD_REQUEST).json({
+      message: "Image file is required",
+    });
   } else {
     try {
       const existingFarmer = await prisma.user.findUnique({
@@ -34,32 +39,56 @@ export const farmerRegister = async (req: Request, res: Response) => {
           email: email,
         },
       });
+
       if (existingFarmer) {
         res.status(STATUS_CODE.BAD_REQUEST).json({
-          message: "Farmer with email or contact already exits",
+          message: "Farmer with email or contact already exists",
         });
       } else {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        await prisma.user.create({
-          data: {
-            name: name,
-            email: email,
-            password: hashedPassword,
-            address: address,
-            contact: contact,
-            image: image,
-            role: role,
-            farmer: {
-              create: {
-                farmName: farmName,
-                farmAddress: farmAddress,
-              },
-            },
-          },
-        });
-        res.status(STATUS_CODE.ACCEPTED).json({
-          message: "Farmer created successfully",
-        });
+        const bufferStream = new Stream.PassThrough();
+        bufferStream.end(req.file.buffer);
+
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { folder: "farmers" },
+          async (error, result) => {
+            if (error) {
+              res.status(500).json({
+                error: "Cloudinary upload failed",
+                detail: error,
+              });
+            } else if (!result?.secure_url) {
+              res.status(500).json({ error: "Upload failed" });
+            }
+            if (result) {
+              const hashedPassword = await bcrypt.hash(password, 10);
+
+              // Create farmer user
+              await prisma.user.create({
+                data: {
+                  name,
+                  email,
+                  password: hashedPassword,
+                  address,
+                  contact,
+                  image: result.secure_url, // store Cloudinary URL
+                  role,
+                  farmer: {
+                    create: {
+                      farmName,
+                      farmAddress,
+                    },
+                  },
+                },
+              });
+            }
+
+            res.status(STATUS_CODE.ACCEPTED).json({
+              message: "Farmer created successfully",
+            });
+          }
+        );
+
+        bufferStream.pipe(uploadStream);
       }
     } catch (error) {
       res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({
@@ -69,7 +98,6 @@ export const farmerRegister = async (req: Request, res: Response) => {
     }
   }
 };
-
 //farmer login
 export const farmerLogin = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -88,52 +116,50 @@ export const farmerLogin = async (req: Request, res: Response) => {
       });
     } else {
       if (findFarmer.role === "FARMER") {
-              bcrypt.compare(password, findFarmer.password, (err, result) => {
-        if (err) {
-          res.status(STATUS_CODE.BAD_REQUEST).json({
-            message: "Error while comparing password",
-          });
-        } else if (!result) {
-          res.status(STATUS_CODE.BAD_REQUEST).json({
-            message: "Invalid password",
-          });
-        } else {
-          const payload: loginPayload = {
-            id: findFarmer.id,
-            email: findFarmer.email,
-            role: findFarmer.role,
-          };
-
-          const token = createToken(payload);
-          res.cookie("auth_token", token, {
-            maxAge: 24 * 60 * 60 * 1000,
-            httpOnly: true,
-            // sameSite: "lax",
-          });
-
-          res.status(STATUS_CODE.ACCEPTED).json({
-            message: "Login successful",
-            data: {
+        bcrypt.compare(password, findFarmer.password, (err, result) => {
+          if (err) {
+            res.status(STATUS_CODE.BAD_REQUEST).json({
+              message: "Error while comparing password",
+            });
+          } else if (!result) {
+            res.status(STATUS_CODE.BAD_REQUEST).json({
+              message: "Invalid password",
+            });
+          } else {
+            const payload: loginPayload = {
               id: findFarmer.id,
-              name: findFarmer.name,
               email: findFarmer.email,
-              address: findFarmer.address,
-              contact: findFarmer.contact,
-              image: findFarmer.image,
               role: findFarmer.role,
-              farmName: findFarmer.farmer?.farmName,
-              farmAddress: findFarmer.farmer?.farmAddress,
-            },
-            token: token,
-          });
-        }
-      });
+            };
 
+            const token = createToken(payload);
+            res.cookie("auth_token", token, {
+              maxAge: 24 * 60 * 60 * 1000,
+              httpOnly: true,
+              // sameSite: "lax",
+            });
+
+            res.status(STATUS_CODE.ACCEPTED).json({
+              message: "Login successful",
+              data: {
+                id: findFarmer.id,
+                name: findFarmer.name,
+                email: findFarmer.email,
+                address: findFarmer.address,
+                contact: findFarmer.contact,
+                image: findFarmer.image,
+                role: findFarmer.role,
+                farmName: findFarmer.farmer?.farmName,
+                farmAddress: findFarmer.farmer?.farmAddress,
+              },
+              token: token,
+            });
+          }
+        });
       } else {
         res.status(STATUS_CODE.BAD_REQUEST).json({
           message: "Invalid role || Only farmer can login",
         });
-        
       }
     }
   } catch (error) {
