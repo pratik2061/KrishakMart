@@ -4,7 +4,13 @@ import { RxEyeOpen } from "react-icons/rx";
 import { useNavigate, Link } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import axios from "axios";
+import { api } from "../../api/authServices";
+
+interface res {
+  response: {
+    data: string;
+  };
+}
 
 export default function AuthSignup() {
   const navigate = useNavigate();
@@ -39,24 +45,30 @@ export default function AuthSignup() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!image) {
+      toast.warn("Please upload a profile image", { theme: "dark" });
+      return;
+    }
+
     setLoading(true);
 
     try {
       const data = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
-        data.append(key, value);
-      });
-      if (image) data.append("image", image);
+      Object.entries(formData).forEach(([key, value]) =>
+        data.append(key, value)
+      );
+      data.append("image", image);
 
-      await axios.post("http://localhost:5000/api/users/signup", data, {
+      await api.post("auth/register", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      toast("Signup successful 🎉", { type: "success", theme: "dark" });
       navigate("/login");
-    } catch (err: any) {
-      toast(err.response?.data?.message || "Signup failed", {
-        type: "error",
+      toast.success("Signup successful 🎉", { theme: "dark" });
+    } catch (err ) {
+      const error = err as res      
+      toast.error(error.response?.data || "Signup failed", {
         theme: "dark",
       });
     } finally {
@@ -161,7 +173,7 @@ export default function AuthSignup() {
             </div>
           </div>
 
-          {/* Image Upload with Preview */}
+          {/* Image Upload */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Upload Profile Image
@@ -205,13 +217,21 @@ export default function AuthSignup() {
             </div>
           </div>
 
-          {/* Submit */}
+          {/* Submit Button with Loading */}
           <button
-            disabled={loading}
             type="submit"
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl transition duration-300"
+            disabled={loading}
+            className={`w-full flex items-center justify-center gap-2 
+              ${loading ? "bg-green-400" : "bg-green-600 hover:bg-green-700"} 
+              text-white font-semibold py-2 rounded-xl transition duration-300`}
           >
-            {loading ? <ClipLoader color="white" size={20} /> : "Sign Up"}
+            {loading ? (
+              <>
+                <ClipLoader size={18} color="#fff" /> Signing Up...
+              </>
+            ) : (
+              "Sign Up"
+            )}
           </button>
         </form>
 
