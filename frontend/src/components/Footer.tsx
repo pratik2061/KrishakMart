@@ -16,7 +16,7 @@ export default function Footer() {
               <img
                 src={logo}
                 alt="KrishakMart Logo"
-                className="w-12 h-12 rounded-full bg-white shadow-md"
+                className="w-20 h-14 rounded-lg bg-white shadow-md object-fill"
               />
               <span className="text-2xl font-bold tracking-wide">
                 KrishakMart
@@ -63,8 +63,7 @@ export default function Footer() {
         {/* Bottom section */}
         <div className="mt-8 flex flex-col sm:flex-row justify-between items-center text-sm text-slate-400">
           <p className="text-center sm:text-left">
-            &copy; {year} KrishakMart. Made with ❤️ by{" "}
-            <span className="font-medium text-white">Pratik Sharma</span>.
+            &copy; {year} KrishakMart
           </p>
           <p className="mt-2 sm:mt-0">All rights reserved.</p>
         </div>

@@ -206,9 +206,9 @@ export default function FarmerSignup() {
             <div>
               <label className="block text-sm font-medium text-gray-700">Role</label>
               <input
-                readOnly
+                disabled
                 value="FARMER"
-                className="mt-1 w-full px-3 py-1 border border-zinc-300 rounded-xl bg-gray-100 text-gray-600 outline-none"
+                className="mt-1 w-full px-3 py-1 border border-zinc-300 rounded-xl bg-gray-100 text-gray-600 outline-none cursor-not-allowed"
               />
             </div>
 

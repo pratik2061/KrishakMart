@@ -1,13 +1,13 @@
-import AuthModal from "../../components/authComponent/AuthModal";
+import AuthSignup from "../../components/authComponent/AuthSignup";
 import Footer from "../../components/Footer"; // Adjust path if needed
 
 
-function Login() {
+function Signup() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Main Content */}
       <main className="flex-grow min-h-[85vh] flex items-center justify-center">
-        <AuthModal />
+        <AuthSignup/>
       </main>
 
       {/* Footer */}
@@ -16,4 +16,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;

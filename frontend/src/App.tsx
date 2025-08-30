@@ -24,12 +24,14 @@ import FarmerOrderSection from "./pages/farmer/FarmerOrderSection";
 import KhaltiResponse from "./components/VerifyingPaymentResponse";
 import UpdateOrderComponent from "./components/farmerComponent/ui/FarmerUpdateProduct";
 import FarmerSignup from "./components/authComponent/FarmerAuthSignUp";
+import Signup from "./pages/auth/Signup";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/farmer/login" element={<FarmerLogin />} />
         <Route path="/farmer/signup" element={<FarmerSignup />} />
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
