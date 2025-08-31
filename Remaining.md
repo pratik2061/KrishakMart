@@ -1,4 +1,3 @@
-signup form baki cha(image upload pani)
 
 profile section 
 
