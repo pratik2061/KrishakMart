@@ -1,6 +1,8 @@
 import { IoMdHome } from "react-icons/io";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaClipboardList, FaShoppingCart } from "react-icons/fa";
 import { IoBagCheck } from "react-icons/io5";
+import { TbReportAnalytics } from "react-icons/tb";
+
 import { NavLink, useLocation } from "react-router-dom";
 
 function MenuList() {
@@ -57,32 +59,46 @@ function MenuList() {
 
       {/* Orders */}
       <NavLink
-      end
+        end
         to={
           isConsumerPath
             ? "/consumer/order"
             : isFarmerPath
             ? "/farmer/order"
             : isAdminPath
-            ? "/admin"
+            ? "/admin/farmers"
             : "/unauthorized"
         }
-       
         className={({ isActive }) =>
           `${navItemClass} ${
             isActive ? "bg-green-100 text-green-800" : "text-amber-950"
           } hover:bg-yellow-50 hover:text-green-700`
         }
       >
-        <IoBagCheck className={iconClass} />
+        {isAdminPath ? <FaClipboardList />: <IoBagCheck className={iconClass} />}
         <span className="truncate">
           {isConsumerPath || isFarmerPath
             ? "Orders"
             : isAdminPath
-            ? "Admin"
+            ? "Farmer"
             : ""}
         </span>
       </NavLink>
+
+      {isAdminPath && (
+        <NavLink
+          to="/admin/reports"
+          end
+          className={({ isActive }) =>
+            `${navItemClass} ${
+              isActive ? "bg-green-100 text-green-800" : "text-amber-950"
+            } hover:bg-yellow-50 hover:text-green-700`
+          }
+        >
+          <TbReportAnalytics className={iconClass} />
+          <span className="truncate">Report</span>
+        </NavLink>
+      )}
     </div>
   );
 }

@@ -25,6 +25,9 @@ import KhaltiResponse from "./components/VerifyingPaymentResponse";
 import UpdateOrderComponent from "./components/farmerComponent/ui/FarmerUpdateProduct";
 import FarmerSignup from "./components/authComponent/FarmerAuthSignUp";
 import Signup from "./pages/auth/Signup";
+import AdminHomeLayout from "./pages/admin/AdminHomeLayout";
+import AdminFarmerList from "./pages/admin/AdminFarmerList";
+import AdminReports from "./pages/admin/AdminReports";
 
 function App() {
   const router = createBrowserRouter(
@@ -38,8 +41,10 @@ function App() {
         <Route path="*" element={<NotFoundPage />} />
 
         <Route element={<ProtectedRoutes allowableRoles="ADMIN" />}>
-          <Route path="/admin">
+          <Route path="/admin" element={<AdminHomeLayout />}>
             <Route index element={<AdminHome />} />
+            <Route path="farmers" element={<AdminFarmerList />} />
+            <Route path="reports" element={<AdminReports />} />
           </Route>
         </Route>
 
