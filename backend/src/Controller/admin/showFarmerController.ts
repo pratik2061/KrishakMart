@@ -7,8 +7,9 @@ export const showFarmersController = async (req: Request, res: Response) => {
     const farmers = await prisma.user.findMany({
       where: {
         role: "FARMER",
-      },include:{
-        farmer:true
+      },
+      include: {
+        farmer: true,
       },
     });
     if (farmers.length === 0) {
@@ -25,9 +26,10 @@ export const showFarmersController = async (req: Request, res: Response) => {
             email: farmer.email,
             contact: farmer.contact,
             address: farmer.address,
+            image: farmer.image,
             farmName: farmer.farmer?.farmName,
-            farmAddress :farmer.farmer?.farmAddress,
-            isVerified: farmer.farmer?.isVerified
+            farmAddress: farmer.farmer?.farmAddress,
+            isVerified: farmer.farmer?.isVerified,
           })),
         },
       });
