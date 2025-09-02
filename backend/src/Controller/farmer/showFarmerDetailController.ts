@@ -15,7 +15,18 @@ export const showFarmerDetailController = async (
         id: farmerData.id,
       },
       select: {
-        farmer: true,
+        id: true,
+        name: true,
+        email: true,
+        contact: true,
+        address: true,
+        image: true,
+        farmer: {
+          select: {
+            farmAddress: true,
+            farmName: true,
+          },
+        },
       },
     });
 

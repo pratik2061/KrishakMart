@@ -14,9 +14,11 @@ import { showConsumerDetailController } from "../../Controller/consumer/showCons
 
 const routes = Router();
 
+//profile
+routes.get("/profile", isConsumer, showConsumerDetailController);
 routes.get("/", isConsumer, consumerLandingController);
-routes.get("/product/:id", isConsumer, showUniqueProductController);
 
+routes.get("/product/:id", isConsumer, showUniqueProductController);
 // cart
 routes.get("/cart", isConsumer, showCartItemController);
 routes.post("/cart/add/:id", isConsumer, checkProductCart, addToCartController);
@@ -28,7 +30,5 @@ routes.get("/order", isConsumer, showOrderController);
 routes.post("/order/initiate-payment", isConsumer, initiateKhaltiPayment);
 routes.post("/order/verify-payment", isConsumer, verifyPaymentAndCreateOrder);
 
-//profile
-routes.get("/profile", isConsumer, showConsumerDetailController);
 
 export default routes;
