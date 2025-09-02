@@ -8,6 +8,7 @@ import {
 } from "../../Controller/admin/verifyFarmerController";
 import { showAllConsumerController } from "../../Controller/admin/showAllConsumerController";
 import { ShowAllProductController } from "../../Controller/admin/showAllProductController";
+import { showAdminDetailController } from "../../Controller/admin/showAdminDetailController";
 
 const routes = Router();
 
@@ -19,5 +20,8 @@ routes.get("/show/products", isAdmin, ShowAllProductController);
 //Farmer verification route
 routes.post("/verifyfarmer/:id", isAdmin, verifyFarmerController);
 routes.post("/rejectfarmer/:id", isAdmin, rejectFarmerController);
+
+//profile
+routes.get("/profile", isAdmin, showAdminDetailController);
 
 export default routes;

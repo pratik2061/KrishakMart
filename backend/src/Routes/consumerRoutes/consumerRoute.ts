@@ -10,6 +10,7 @@ import { showOrderController } from "../../Controller/consumer/showOrderControll
 import { deleteCartItemController } from "../../Controller/consumer/deleteCartItemController";
 import { updateCartItemController } from "../../Controller/consumer/updateCartItemController";
 import { initiateKhaltiPayment } from "../../utils/initiateKhaltiPayment";
+import { showConsumerDetailController } from "../../Controller/consumer/showConsumerDetailController";
 
 const routes = Router();
 
@@ -26,5 +27,8 @@ routes.post("/cart/update/:id", isConsumer, updateCartItemController);
 routes.get("/order", isConsumer, showOrderController);
 routes.post("/order/initiate-payment", isConsumer, initiateKhaltiPayment);
 routes.post("/order/verify-payment", isConsumer, verifyPaymentAndCreateOrder);
+
+//profile
+routes.get("/profile", isConsumer, showConsumerDetailController);
 
 export default routes;
