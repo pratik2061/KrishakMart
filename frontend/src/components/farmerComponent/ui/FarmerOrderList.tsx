@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { fetchOrder } from "../../../api/farmer/farmerHome/fetchOrder";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export interface OrderItem {
   consumerEmail: string;
@@ -118,9 +119,17 @@ export default function FarmerOrderList() {
         grouped[item.orderId].total += item.totalprice;
       }
 
-      setOrders(Object.values(grouped));
+      // ✅ Sort by newest first (descending orderId)
+      const sortedOrders = Object.values(grouped).sort((a, b) => b.id - a.id);
+
+      setOrders(sortedOrders);
     } catch (error) {
-      console.error("Error fetching orders:", error);
+      const errormsg = error ? error : "Failed to fetch ";
+      toast(`${errormsg}`, {
+        theme: "dark",
+        autoClose: 3000,
+        type: "error",
+      });
     }
   };
 

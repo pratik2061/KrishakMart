@@ -27,7 +27,9 @@ import FarmerSignup from "./components/authComponent/FarmerAuthSignUp";
 import Signup from "./pages/auth/Signup";
 import AdminHomeLayout from "./pages/admin/AdminHomeLayout";
 import AdminFarmerList from "./pages/admin/AdminFarmerList";
-import AdminReports from "./pages/admin/AdminReports";
+import ConsumerProfileSection from "./pages/consumer/ConsumerProfileSection";
+import AdminProfileSection from "./pages/admin/AdminProfile";
+import FarmerProfileSection from "./pages/farmer/FarmerProfile";
 
 function App() {
   const router = createBrowserRouter(
@@ -44,7 +46,8 @@ function App() {
           <Route path="/admin" element={<AdminHomeLayout />}>
             <Route index element={<AdminHome />} />
             <Route path="farmers" element={<AdminFarmerList />} />
-            <Route path="reports" element={<AdminReports />} />
+            {/* <Route path="reports" element={<AdminReports />} /> */}
+            <Route path="profile" element={<AdminProfileSection />} />
           </Route>
         </Route>
 
@@ -55,6 +58,7 @@ function App() {
             <Route path="product/edit" element={<EditProductForm />} />
             <Route path="order" element={<FarmerOrderSection />} />
             <Route path="order/update" element={<UpdateOrderComponent />} />
+            <Route path="profile" element={<FarmerProfileSection />} />
           </Route>
         </Route>
 
@@ -63,6 +67,7 @@ function App() {
             <Route index element={<ConsumerHome />} />
             <Route path="cart" element={<ConsumerCartSection />} />
             <Route path="order" element={<ConsumerOrderSection />} />
+            <Route path="profile" element={<ConsumerProfileSection />} />
             <Route path="khalti-response" element={<KhaltiResponse />} />
           </Route>
         </Route>

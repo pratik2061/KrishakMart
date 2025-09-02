@@ -5,7 +5,6 @@ import krishakMart_logo from "/krishakMart_Logo.jpg";
 import MenuFooter from "../../components/consumerComponent/ui/MenuFooter";
 import { IoMdHome } from "react-icons/io";
 import { FaClipboardList, FaUserAlt } from "react-icons/fa";
-import { TbReportAnalytics } from "react-icons/tb";
 import { IoClose, IoMenu } from "react-icons/io5";
 
 function AdminHomeLayout() {
@@ -105,7 +104,7 @@ function AdminHomeLayout() {
                 <FaClipboardList className="text-xl" />
                 <span>Farmer</span>
               </NavLink>
-
+              {/* 
               <NavLink
                 end
                 onClick={toggleMobileMenu}
@@ -120,7 +119,7 @@ function AdminHomeLayout() {
               >
                 <TbReportAnalytics className="text-xl" />
                 <span>Report</span>
-              </NavLink>
+              </NavLink> */}
 
               <NavLink
                 end

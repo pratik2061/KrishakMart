@@ -1,7 +1,6 @@
 import { IoMdHome } from "react-icons/io";
 import { FaClipboardList, FaShoppingCart } from "react-icons/fa";
 import { IoBagCheck } from "react-icons/io5";
-import { TbReportAnalytics } from "react-icons/tb";
 
 import { NavLink, useLocation } from "react-router-dom";
 
@@ -75,7 +74,11 @@ function MenuList() {
           } hover:bg-yellow-50 hover:text-green-700`
         }
       >
-        {isAdminPath ? <FaClipboardList />: <IoBagCheck className={iconClass} />}
+        {isAdminPath ? (
+          <FaClipboardList />
+        ) : (
+          <IoBagCheck className={iconClass} />
+        )}
         <span className="truncate">
           {isConsumerPath || isFarmerPath
             ? "Orders"
@@ -85,7 +88,7 @@ function MenuList() {
         </span>
       </NavLink>
 
-      {isAdminPath && (
+      {/* {isAdminPath && (
         <NavLink
           to="/admin/reports"
           end
@@ -98,7 +101,7 @@ function MenuList() {
           <TbReportAnalytics className={iconClass} />
           <span className="truncate">Report</span>
         </NavLink>
-      )}
+      )} */}
     </div>
   );
 }
