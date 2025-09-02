@@ -38,3 +38,26 @@ export const verifyFarmerController = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const rejectFarmerController = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.body; // id = userId
+
+    // Delete dependent records first
+    await prisma.product.deleteMany({ where: { userId: id } });
+    await prisma.order.deleteMany({ where: { userId: id } });
+    await prisma.cartItem.deleteMany({ where: { userId: id } });
+    await prisma.payment.deleteMany({ where: { userId: id } });
+    await prisma.farmer.delete({ where: { userId: id } });
+
+    // Delete user
+    await prisma.user.delete({ where: { id } });
+
+    res
+      .status(200)
+      .json({ message: "Farmer rejected and deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error rejecting farmer" });
+  }
+};
