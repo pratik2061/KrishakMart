@@ -18,12 +18,10 @@ function ConsumerHomeLayout() {
     <div className="flex flex-col min-h-screen bg-slate-50">
       {/* Layout container */}
       <div className="flex flex-1 min-h-0 relative">
-        {/* Sidebar - Desktop */}
         <aside className="hidden lg:block w-[200px] h-full fixed top-0 left-0 border-r border-gray-300 bg-white z-20">
           <SideMenuBar />
         </aside>
 
-        {/* Mobile Header */}
         <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-300 z-30 flex items-center justify-between px-4 shadow-sm">
           <button
             onClick={toggleMobileMenu}
@@ -41,10 +39,9 @@ function ConsumerHomeLayout() {
               KrishakMart
             </span>
           </div>
-          <div className="w-10"></div> {/* Spacer for centering */}
+          <div className="w-10"></div> 
         </div>
 
-        {/* Sidebar Drawer - Mobile */}
         <div
           className={`mobile-menu fixed lg:hidden top-0 left-0 w-[280px] h-full bg-white z-50 shadow-2xl transition-transform duration-300 transform ${
             mobileScreenMenu ? "translate-x-0" : "-translate-x-full"

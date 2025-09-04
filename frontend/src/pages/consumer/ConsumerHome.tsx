@@ -123,13 +123,14 @@ function ConsumerHome() {
         className="w-full md:px-14 px-6 py-8"
       >
         {filteredProducts.length > 0 ? (
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid gap-6 grid-cols-1 justify-items-center sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredProducts.map((product) => (
               <motion.div
                 key={product.id}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
+                className="w-full max-w-sm flex justify-center"
               >
                 <ProductCard product={product} />
               </motion.div>

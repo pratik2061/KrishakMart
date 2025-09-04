@@ -78,16 +78,17 @@ function FarmerHome() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
-          className="w-full md:px-14 px-6 py-8 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          className="w-full md:px-14 px-6 py-8 grid gap-6 grid-cols-1 justify-items-center sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         >
           {productData.map((product, index) => (
-            <FarmerProductCard
-              product={product}
-              key={index}
-              onDelete={(id) =>
-                setProductData((prev) => prev.filter((p) => p.id !== id))
-              }
-            />
+            <div key={index} className="w-full max-w-sm flex justify-center">
+              <FarmerProductCard
+                product={product}
+                onDelete={(id) =>
+                  setProductData((prev) => prev.filter((p) => p.id !== id))
+                }
+              />
+            </div>
           ))}
         </motion.div>
       )}

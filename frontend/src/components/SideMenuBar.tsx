@@ -4,19 +4,19 @@ import MenuList from "./consumerComponent/ui/MenuList";
 
 function SideMenuBar() {
   return (
-    <div className="w-full h-full mx-auto flex flex-col justify-between gap-8 lg:gap-16 px-4 py-6 sm:px-6 lg:px-4 lg:py-8">
-      {/* Logo Section */}
-      <div className="flex justify-center items-center">
+    <div className="flex flex-col justify-between h-full lg:h-screen w-full px-2 sm:px-4 py-2 sm:py-4">
+      {/* Logo */}
+      <div className="flex justify-center items-center mb-2 sm:mb-4">
         <HomeLogo />
       </div>
 
-      {/* Menu List */}
-      <div className="flex-1">
+      {/* Menu - scrollable if needed */}
+      <div className="flex-1 overflow-y-auto">
         <MenuList />
       </div>
 
       {/* Footer */}
-      <div>
+      <div className="mt-2 sm:mt-4">
         <MenuFooter />
       </div>
     </div>

@@ -1,7 +1,6 @@
 import { IoMdHome } from "react-icons/io";
 import { FaClipboardList, FaShoppingCart } from "react-icons/fa";
 import { IoBagCheck } from "react-icons/io5";
-
 import { NavLink, useLocation } from "react-router-dom";
 
 function MenuList() {
@@ -12,12 +11,12 @@ function MenuList() {
   const isAdminPath = path === "/admin" || path.startsWith("/admin/");
 
   const navItemClass =
-    "flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2 sm:py-3 text-base sm:text-lg font-medium rounded-xl transition-all duration-200";
+    "flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 sm:py-3 text-sm sm:text-base font-medium rounded-lg transition-all duration-200 truncate";
 
-  const iconClass = "text-xl sm:text-2xl";
+  const iconClass = "text-lg sm:text-xl flex-shrink-0";
 
   return (
-    <div className="w-full space-y-3 sm:space-y-4 py-4 sm:py-6 px-2 sm:px-3">
+    <div className="w-full flex flex-col overflow-y-auto space-y-2 sm:space-y-3 py-2 sm:py-4 px-1 sm:px-2">
       {/* Home Link */}
       <NavLink
         end
@@ -75,7 +74,7 @@ function MenuList() {
         }
       >
         {isAdminPath ? (
-          <FaClipboardList />
+          <FaClipboardList className={iconClass} />
         ) : (
           <IoBagCheck className={iconClass} />
         )}
@@ -87,21 +86,6 @@ function MenuList() {
             : ""}
         </span>
       </NavLink>
-
-      {/* {isAdminPath && (
-        <NavLink
-          to="/admin/reports"
-          end
-          className={({ isActive }) =>
-            `${navItemClass} ${
-              isActive ? "bg-green-100 text-green-800" : "text-amber-950"
-            } hover:bg-yellow-50 hover:text-green-700`
-          }
-        >
-          <TbReportAnalytics className={iconClass} />
-          <span className="truncate">Report</span>
-        </NavLink>
-      )} */}
     </div>
   );
 }
