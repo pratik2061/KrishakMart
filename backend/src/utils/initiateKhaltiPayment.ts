@@ -35,7 +35,9 @@ export const initiateKhaltiPayment = async (req: Request, res: Response) => {
       "https://a.khalti.com/api/v2/epayment/initiate/",
       {
         return_url: "http://localhost:5173/consumer/khalti-response",
+        // return_url: "http://10.40.40.193:5173/consumer/khalti-response",
         website_url: "http://localhost:5173",
+        // website_url: "http://10.40.40.193:5173",
         amount: totalAmount * 100, // convert to paisa
         purchase_order_id: "order_" + Date.now(),
         purchase_order_name: "KrishakMart Order",
