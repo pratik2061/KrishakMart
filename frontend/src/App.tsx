@@ -30,11 +30,13 @@ import AdminFarmerList from "./pages/admin/AdminFarmerList";
 import ConsumerProfileSection from "./pages/consumer/ConsumerProfileSection";
 import AdminProfileSection from "./pages/admin/AdminProfile";
 import FarmerProfileSection from "./pages/farmer/FarmerProfile";
+import ConsumerLanding from "./pages/AllUserLandingPage";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
+        <Route path="/" element={<ConsumerLanding />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/farmer/login" element={<FarmerLogin />} />
