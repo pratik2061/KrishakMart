@@ -5,6 +5,7 @@ import consumerRoute from "./consumerRoutes/consumerRoute";
 import farmerRoute from "./farmerRoutes/farmerRoute";
 import { checkToken } from "../utils/checkToken";
 import { loginPayload } from "../types/Payload";
+import { fetchProductForAllConsumer } from "../Controller/fetchProductForAllConsumer";
 
 const routes = Router();
 
@@ -15,6 +16,8 @@ routes.use("/api/auth", authRoute);
 routes.use("/api/admin", adminRoute);
 routes.use("/api/consumer", consumerRoute);
 routes.use("/api/farmer", farmerRoute);
+
+routes.get("/api/consumer/all", fetchProductForAllConsumer);
 
 // for checking session for all users
 
