@@ -34,7 +34,7 @@ function KhaltiResponse() {
 
     const verifyPayment = async () => {
       try {
-        const res = await verifyKhaltiPayment(pidx);
+        const res = await verifyKhaltiPayment(pidx) as { status: number , data: string };
 
         if (res.status === 201 && res.data) {
           toast.success(" Payment successful and order created!", {
