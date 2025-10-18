@@ -116,7 +116,7 @@ export const userLogin = async (req: Request, res: Response) => {
             const token = createToken(payload);
             res.cookie("auth_token", token, {
               maxAge: 24 * 60 * 60 * 1000,
-              httpOnly: true,
+              // httpOnly: true,
               // sameSite: "lax",
             });
 
@@ -160,7 +160,7 @@ export const userLogout = async (req: Request, res: Response) => {
     }
     res.clearCookie("auth_token", {
       maxAge: 24 * 60 * 60 * 1000,
-      httpOnly: true,
+      // httpOnly: true,
       // sameSite: "lax",
     });
     res.status(STATUS_CODE.ACCEPTED).json({
