@@ -12,8 +12,8 @@ app.use(urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "Public")));
 app.use(
   cors({
-    // origin : process.env.CLIENT_URL,
-    origin: true,
+    origin : process.env.CLIENT_URL,
+    // origin: true,
     credentials: true,
   })
 );
