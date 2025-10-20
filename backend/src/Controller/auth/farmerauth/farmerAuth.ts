@@ -136,7 +136,7 @@ export const farmerLogin = async (req: Request, res: Response) => {
             res.cookie("auth_token", token, {
               maxAge: 24 * 60 * 60 * 1000,
               httpOnly: true,
-              sameSite: "lax",
+              sameSite: "none",
               secure: true,
             });
 
@@ -184,7 +184,7 @@ export const farmerLogout = async (req: Request, res: Response) => {
     res.clearCookie("auth_token", {
       maxAge: 24 * 60 * 60 * 1000,
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: "none",
       secure: true,
     });
     res.status(STATUS_CODE.ACCEPTED).json({
