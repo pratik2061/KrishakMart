@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
 });
 
 app.get('/health',(req,res)=>{
-res.send("health is healthy from CI/CD pipeline")
+res.send("backend is healthy from CI/CD pipeline")
 })
 
 const PORT = process.env.PORT || 4000;
