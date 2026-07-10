@@ -1,0 +1,41 @@
+services:
+  krishakmart-backend-services:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: krishakmart-backend
+
+    ports: 
+    - 3000:3000
+
+    environment:
+     PORT: ${PORT}
+     JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+     CLIENT_URL: ${CLIENT_URL} 
+     DATABASE_URL: ${DATABASE_URL}
+     CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+     CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY} 
+     CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET} 
+     KHALTI_SECRET_KEY: ${KHALTI_SECRET_KEY} 
+    
+    depends_on:
+    - database-services
+
+
+  database-services:
+    image: postgres:16
+    container_name: krishakmart-database
+
+    ports:
+    - 5432:5432
+
+    environment:
+     POSTGRES_USER: ${DB_USER}
+     POSTGRES_PASSWORD: ${DB_PASSWORD}
+     POSTGRES_DB: ${DB_NAME}
+
+    volumes:
+    - krishakmart-db-volume:/var/lib/postgresql/data
+
+volumes:
+  krishakmart-db-volume:
