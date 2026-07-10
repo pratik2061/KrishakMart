@@ -21,7 +21,6 @@ jobs:
         key: ${{secrets.SSH_PRIVATE_KEY}}
         script: |
          cd /var/www/KrishakMart/backend
-         docker compose down 
          git pull
          docker compose up -d --build 
 
