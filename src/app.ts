@@ -25,6 +25,10 @@ app.get("/", (req, res) => {
   res.send("finally docker images and container are ready to operate");
 });
 
+app.get('/health',(req,res)=>{
+res.send("health is healthy from CI/CD pipeline")
+})
+
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log("server is running on ", PORT);
